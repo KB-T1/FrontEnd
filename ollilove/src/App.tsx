@@ -12,7 +12,7 @@ import {
 function App() {
   return (
     <RecoilRoot>
-      <div>hello world</div>
+      <div className="root">hello world</div>
     </RecoilRoot>
   );
 }
