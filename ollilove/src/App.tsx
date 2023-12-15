@@ -1,16 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
-import { H1, H2, H3, P1, P2, P3, P4, Comment } from "./commons/Text";
-import { ButtonGray, ButtonYellow } from "./commons/Button";
-import { Tabbar } from "./commons/Tabbar";
+import { RecoilRoot } from "recoil";
 import { Routes, Route, BrowserRouter, useNavigate } from "react-router-dom";
 import TransferRecord from './pages/TransferRecord/TransferRecord';
 import FamilyMemberDetail from "./pages/FamilyMemberDetail.tsx/FamilyMemberDetail";
