@@ -11,24 +11,32 @@ import {
 import { H1, H2, H3, P1, P2, P3, P4, Comment } from "./commons/Text";
 import { ButtonGray, ButtonYellow } from "./commons/Button";
 import { Tabbar } from "./commons/Tabbar";
+import { Routes, Route, BrowserRouter, useNavigate } from "react-router-dom";
+import TransferRecord from './pages/TransferRecord/TransferRecord';
+import FamilyMemberDetail from "./pages/FamilyMemberDetail.tsx/FamilyMemberDetail";
+import ShortsDetail from "./pages/ShortsDetail/ShortsDetail";
+import TransferAmountInput from "./pages/TransferAmountInput/TransferAmountInput";
+import TransferConfirm from "./pages/TransferConfirm/TransferConfirm";
+import Index from "./pages/Index/Index";
+import Home from "./pages/Home/Home";
+import ShortsList from "./pages/ShortsList/ShortsList";
 
 function App() {
+
   return (
     <RecoilRoot>
-      <div className="root">
-        hello world
-        <H1>H1입니다</H1>
-        <H2>H2입니다</H2>
-        <H3>H3입니다</H3>
-        <P1>P1입니다</P1>
-        <P2>P2입니다</P2>
-        <P3>P3입니다</P3>
-        <P4>P4입니다</P4>
-        <Comment>주석입니다</Comment>
-        <ButtonGray>버튼</ButtonGray>
-        <ButtonYellow>버튼</ButtonYellow>
-        <Tabbar />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />}/>
+          <Route path="/home" element={<Home />}/>
+          <Route path="/familymemberdetail" element={<FamilyMemberDetail />}/>
+          <Route path="/shortsdetail" element={<ShortsDetail />}/>
+          <Route path="/shortslist" element={<ShortsList />}/>
+          <Route path="/transferAmountinput" element={<TransferAmountInput />}/>
+          <Route path="/transferconfirm" element={<TransferConfirm />}/>
+          <Route path="/transferrecord" element={<TransferRecord />}/>
+        </Routes>
+      </BrowserRouter>
     </RecoilRoot>
   );
 }
