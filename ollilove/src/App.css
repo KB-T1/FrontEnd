@@ -2,29 +2,38 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .root {
-  max-width: 400px;
+  max-width: 393px;
   margin-left: auto;
   margin-right: auto;
   background-color: #f2f2f2;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@font-face {
+  font-family: "KBFGDisplayB";
+  src: url("./fonts/KBFGDisplayB.ttf");
+}
+@font-face {
+  font-family: "KBFGDisplayL";
+  src: url("./fonts/KBFGDisplayL.ttf");
+}
+@font-face {
+  font-family: "KBFGDisplayM";
+  src: url("./fonts/KBFGDisplayM.ttf");
+}
+@font-face {
+  font-family: "KBFGDisplayMI";
+  src: url("./fonts/KBFGDisplayMI.ttf");
+}
+@font-face {
+  font-family: "KBFGTextB";
+  src: url("./fonts/KBFGTextB.ttf");
+}
+@font-face {
+  font-family: "KBFGTextL";
+  src: url("./fonts/KBFGTextL.ttf");
+}
+@font-face {
+  font-family: "KBFGTextM";
+  src: url("./fonts/KBFGTextM.ttf");
 }
