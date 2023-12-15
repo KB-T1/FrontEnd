@@ -9,7 +9,6 @@ export function Tabbar() {
 
   const handleClick = (type: string) => {
     setTabbarState(type);
-    console.log(tabbarState);
   };
 
   return (
