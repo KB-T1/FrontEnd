@@ -7,8 +7,8 @@ import { Comment2 } from "./Text";
 export function Tabbar() {
   const [tabbarState, setTabbarState] = useRecoilState(barState);
 
-  const handleClick = (type: string) => {
-    setTabbarState(type);
+  const handleClick = (content: string) => {
+    setTabbarState(content);
   };
 
   return (
@@ -18,7 +18,7 @@ export function Tabbar() {
           handleClick("home");
         }}
         state={tabbarState}
-        type="home"
+        content="home"
       >
         <Comment2>홈</Comment2>
       </TabButton>
@@ -27,7 +27,7 @@ export function Tabbar() {
           handleClick("video");
         }}
         state={tabbarState}
-        type="video"
+        content="video"
       >
         <Comment2>보관함</Comment2>
       </TabButton>
@@ -49,7 +49,7 @@ const TabbarContainer = styled.div`
 const TabButton = styled.button<{
   onClick?: any;
   state?: string;
-  type?: string;
+  content?: string;
 }>`
   display: flex;
   justify-content: center;
@@ -61,10 +61,10 @@ const TabButton = styled.button<{
   height: 100%;
   border: 0;
 
-  color: ${(props) => (props.state === props.type ? "#FFDA49" : "#666560")};
+  color: ${(props) => (props.state === props.content ? "#FFDA49" : "#666560")};
 
   background-image: ${(props) =>
-    props.type === "home"
+    props.content === "home"
       ? props.state === "home"
         ? "url('../assets/homeSelected.png');"
         : "url('../assets/homeDefault.png');"

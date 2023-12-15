@@ -11,11 +11,15 @@ interface NavbarProps {
 export function Navbar({ type, children }: NavbarProps) {
   return (
     <NavbarContainer>
-      <NavbarChild>{type === "back" && <img src={back}></img>}</NavbarChild>
+      <NavbarChild>
+        {type === "back" ? <img src={back}></img> : <div></div>}
+      </NavbarChild>
       <NavbarChild>
         <P2>{children}</P2>
       </NavbarChild>
-      <NavbarChild>{type === "esc" && <img src={esc}></img>}</NavbarChild>
+      <NavbarChild>
+        {type === "esc" ? <img src={esc}></img> : <div></div>}
+      </NavbarChild>
     </NavbarContainer>
   );
 }
@@ -25,6 +29,7 @@ const NavbarContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
 
   padding-left: 20px;
   padding-right: 20px;
@@ -32,4 +37,9 @@ const NavbarContainer = styled.div`
   height: 28px;
 `;
 
-const NavbarChild = styled.div``;
+const NavbarChild = styled.div`
+  & > div {
+    width: 28px;
+    height: 100%;
+  }
+`;
