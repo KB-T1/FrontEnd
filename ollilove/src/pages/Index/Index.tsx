@@ -1,26 +1,66 @@
-import React from "react";
-import { H1, H2, H3, P1, P2, P3, P4, Comment } from "../../commons/Text";
-import { ButtonGray, ButtonYellow } from "../../commons/Button";
-import { Tabbar } from "../../commons/Tabbar";
-import { Navbar } from "../../commons/Navbar";
-import { NotifyBar } from "../../commons/NotifyBar";
+import MainImage from "../../assets/landingMainImage.svg";
+import MainButton from "../../assets/landingButton.svg";
+import styled from "styled-components";
+import { Comment, P2 } from "../../commons/Text";
 
 export default function Index() {
   return (
-    <>
-      <Navbar type="back">네비게이션 바</Navbar>
-      <NotifyBar>새로운 마음이 도착했어요!</NotifyBar>
-      <H1>H1입니다</H1>
-      <H2>H2입니다</H2>
-      <H3>H3입니다</H3>
-      <P1>P1입니다</P1>
-      <P2>P2입니다</P2>
-      <P3>P3입니다</P3>
-      <P4>P4입니다</P4>
-      <Comment>주석입니다</Comment>
-      <ButtonGray>버튼</ButtonGray>
-      <ButtonYellow>버튼</ButtonYellow>
-      <Tabbar />
-    </>
+    <PageWrapper>
+      <img src={MainImage} />
+
+      <HeadingContainer>
+        <h1>올리사랑</h1>
+        <Comment>부모를 향한 자식의 사랑</Comment>
+      </HeadingContainer>
+      <ContentContainer>
+        <P2>영상편지로 용돈을 송금하여</P2>
+        <P2>특별한 마음을 전해보세요.</P2>
+      </ContentContainer>
+
+      <img src={MainButton} />
+    </PageWrapper>
   );
 }
+
+const PageWrapper = styled.div`
+  position: relative;
+  box-sizing: border-box;
+  background-color: #ffda49;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 182px;
+
+  & > img:first-child {
+    margin: 0 auto;
+  }
+
+  & > img:last-child {
+    position: fixed;
+    bottom: 3rem;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+`;
+
+const HeadingContainer = styled.div`
+  width: 280px;
+  margin: 0 auto;
+  margin-top: 4rem;
+
+  & > h1 {
+    font-size: 48px;
+    color: #4a4840;
+    font-family: "KBFGDisplayB";
+    margin: 0 auto;
+  }
+`;
+
+const ContentContainer = styled.div`
+  width: 280px;
+  margin: 0 auto;
+  margin-top: 4rem;
+  color: #4a4840;
+`;

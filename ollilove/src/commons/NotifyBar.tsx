@@ -25,7 +25,7 @@ const NotifyBarContainer = styled.div`
   width: 353px;
   height: 50px;
   background-color: var(--main3, #ffe992);
-  filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.1));
   border-radius: 20px;
   margin: 0 auto;
   & > p {
