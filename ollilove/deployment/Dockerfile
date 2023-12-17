@@ -3,16 +3,8 @@ FROM node:alpine as builder
 WORKDIR /app
 COPY . ./
 
-# 출력 디렉토리의 파일 목록 확인
-RUN ls -l
-RUN pwd
-RUN ls -l /app/ollilove/package.json
-
 # 디렉토리 변경
 WORKDIR /app/ollilove
-
-RUN ls -l
-RUN pwd
 
 RUN yarn install && npm install && yarn build 
 
