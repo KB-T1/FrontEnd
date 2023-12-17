@@ -1,6 +1,6 @@
 FROM node:alpine as builder
 
-WORKDIR /app
+WORKDIR /app/ollilove
 COPY . ./
 RUN yarn install && npm install && yarn build 
 
