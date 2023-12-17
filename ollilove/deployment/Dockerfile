@@ -1,6 +1,6 @@
 FROM node:alpine as builder
 
-WORKDIR /app/ollilove
+WORKDIR /app
 COPY . ./
 
 # 출력 디렉토리의 파일 목록 확인
