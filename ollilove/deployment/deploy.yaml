@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: kbt1-ollilove-app
-          image: docker.io/gyuminn/kbt1-ollilove-app:latest
+          image: docker.io/gyuminn/kbt1-ollilove-app:1.0.0
           imagePullPolicy: Always
           ports:
             - name: port1
