@@ -8,9 +8,12 @@ RUN ls -l
 RUN pwd
 RUN ls -l /app/ollilove/package.json
 
-RUN cd ollilove
+# 디렉토리 변경
+WORKDIR /app/ollilove
+
 RUN ls -l
 RUN pwd
+
 RUN yarn install && npm install && yarn build 
 
 ## 빌드 결과를 nginx에 배포한다.
