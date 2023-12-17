@@ -8,6 +8,7 @@ RUN ls -l
 RUN pwd
 RUN ls -l /app/ollilove/package.json
 
+RUN cd ollilove
 RUN yarn install && npm install && yarn build 
 
 ## 빌드 결과를 nginx에 배포한다.
