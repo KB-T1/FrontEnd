@@ -24,7 +24,7 @@ podTemplate(
         } 
 
 		//-- Read pipeline.properties and setting variables
-		def props = readProperties  file:"deployment/pipeline.properties"
+		def props = readProperties  file:"ollilove/deployment/pipeline.properties"
 		
 		credentialRegistry=props["credentialRegistry"]
 		registry=props["registry"]
