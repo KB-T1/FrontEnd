@@ -7,6 +7,8 @@ import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
 
 export default function Home() {
+
+  
   const tmpMembers = [
     {
       profile: "라무",
@@ -52,6 +54,18 @@ export default function Home() {
       time: "15:07",
     },
   ];
+
+  const onClickNotify = () => {
+
+  }
+
+  const onClickMember = (familyId:number) => {
+
+  }
+
+  const onClickTransferInfo = (transferId:number) => {
+
+  }
 
   return (
     <HomeContainer>
