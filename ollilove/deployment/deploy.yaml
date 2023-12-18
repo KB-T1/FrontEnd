@@ -48,14 +48,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kbt1-ollilove-service
+  name: ollilove
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   rules:
-    - host: kbt1-ollilove-service.165.192.105.60.nip.io
+    - host: ollilove.165.192.105.60.nip.io
       http:
         paths:
           - path: /(.*)
