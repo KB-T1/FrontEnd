@@ -30,7 +30,7 @@ const NavbarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-
+  background: #fff;
   padding-left: 20px;
   padding-right: 20px;
   width: 100%;

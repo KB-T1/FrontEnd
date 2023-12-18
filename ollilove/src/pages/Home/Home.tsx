@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NotifyBar } from "../../commons/NotifyBar";
+import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/VideoRecorder/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
@@ -40,14 +41,14 @@ export default function Home() {
       profile: "비비",
       name: "김옥순",
       relationship: "엄마",
-      amount: 500000,
+      amount: -500000,
       time: "15:07",
     },
     {
       profile: "비비",
       name: "김옥순",
       relationship: "엄마",
-      amount: 500000,
+      heart: true,
       time: "15:07",
     },
   ];
@@ -79,16 +80,19 @@ export default function Home() {
               relationship={el.relationship}
               amount={el.amount}
               time={el.time}
+              heart={el.heart}
             ></RecentBtn>
           );
         })}
       </RecentContainer>
+      <Tabbar />
     </HomeContainer>
   );
 }
 
 const HomeContainer = styled.div`
   padding-top: 28px;
+  margin-bottom: 40px;
   height: 100vh;
   box-sizing: border-box;
 `;
