@@ -1,24 +1,10 @@
 import { useQuery, UseQueryOptions } from "react-query";
+import { User } from "./types/user";
+import { FamilyMember } from "./types/familyMember";
+import { TransferInfo } from "./types/transferInfo";
 
-export interface FamilyMember {
-    userName: string;
-    nickName: string;
-    userId: number;
-};
-
-export interface User {
-    userId: any;
-    userName: string;
-};
-
-export interface TransferInfo {
-    transferId: number;
-    senderId: number;
-    receiverId: number;
-    amount: number;
-    time: string;
-};
-
+const userUrl = "http://kbt1-ollilove-user-service:8080/api/"
+const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/"
 //UserInfo 가져오기 & 회원가입 관련 query
 interface GetUserCondition {
     userName: string;
@@ -30,7 +16,7 @@ interface UserParams {
 
 async function getUser(params: UserParams) {
     const [, { info }] = params.queryKey;
-    const response = await fetch(``);
+    const response = await fetch(userUrl+'1/');
     if (!response.ok) {
         throw new Error("Problem fetching data");
     }
@@ -40,12 +26,19 @@ async function getUser(params: UserParams) {
 }
 
 
-export const getUserInfo = (
+export const GetUserInfo = (
     conditions: GetUserCondition,
     ) => {
     return useQuery<User, Error>(
     ["signup", conditions],
-    ()=>getUser({queryKey: ["", {info:conditions}]}));
+    ()=>getUser({queryKey: ["", {info:conditions}]}),
+    {
+        onSuccess: data => {
+            return data
+        }
+    }
+    
+    );
 }
 
 //FamilyInfo 가져오기 관련 query
@@ -59,7 +52,7 @@ interface FamilyInfoParams {
 
 async function getFamily(params: FamilyInfoParams) {
     const [, { info }] = params.queryKey;
-    const response = await fetch(``);
+    const response = await fetch(userUrl);
     if (!response.ok) {
         throw new Error("Problem fetching data");
     }
@@ -69,12 +62,17 @@ async function getFamily(params: FamilyInfoParams) {
 }
 
 
-export const getFamilyInfo = (
+export const GetFamilyInfo = (
     conditions: GetFamilyInfoCondition,
     ) => {
-    useQuery<FamilyMember[], Error>(
-    ["user", "family", "info", conditions],
-    ()=>getFamily({queryKey: ["", {info:conditions}]}))
+    return useQuery<FamilyMember[], Error>(
+    ["user", "family", conditions],
+    ()=>getFamily({queryKey: ["", {info:conditions}]}),
+    {
+        onSuccess: data => {
+            return data
+        }
+    })
 }
 
 // 송금 내역 관련 query
@@ -100,10 +98,16 @@ async function getTransfer(params: TransferListParams) {
 }
 
 
-export const getTransferList = (
+export const GetTransferList = (
     conditions: GetTransferListCondition,
-    ) => 
-    useQuery<TransferInfo[], Error>(
+    ) => {
+    return useQuery<TransferInfo[], Error>(
     ["history", "all", conditions],
     ()=>getTransfer({queryKey: ["", {info:conditions}]}),
+    {
+        onSuccess: data => {
+            return data
+        }
+    }
 );
+}

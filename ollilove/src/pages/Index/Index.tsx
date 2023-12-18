@@ -2,8 +2,28 @@ import MainImage from "../../assets/landingMainImage.svg";
 import MainButton from "../../assets/landingButton.svg";
 import styled from "styled-components";
 import { Comment, P2 } from "../../commons/Text";
+import { useEffect } from "react";
+import { userState } from "../../states/userState";
+import { useRecoilState } from "recoil";
 
 export default function Index() {
+
+  const [user, setUser] = useRecoilState(userState);
+
+  // 기존에 로그인한 적 있는지 확인
+  // 있으면 userState에 넣고 home으로 이동
+  // TODO 없으면 signup으로 이동.
+
+  useEffect(()=> {
+
+    const userId = localStorage.getItem('userId');
+    
+    if (userId != null) {
+      setUser(JSON.parse(userId))
+    }
+
+  })
+
   const handleBtnClick = () => {
     document.location.href = "/home";
   };

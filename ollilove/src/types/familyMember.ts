@@ -1,5 +1,5 @@
 export interface FamilyMember {
-    name: string;
+    userName: string;
     nickName: string;
-    memberId: number;
-}
+    userId: number;
+};

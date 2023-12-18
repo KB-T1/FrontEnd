@@ -1,30 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { NotifyBar } from "../../commons/NotifyBar";
 import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
+import { GetFamilyInfo, GetTransferList, GetUserInfo } from "../../ReactQuery";
+import { useRecoilState } from "recoil";
+import { userState } from "../../states/userState";
+import { familyState } from "../../states/familyState";
+import { Navigate } from "react-router-dom";
 
 export default function Home() {
-
   
+  //유저 정보 얻어오기
+  const [user, setUser] = useRecoilState(userState);
+  const [family, setFamily] = useRecoilState(familyState);
+
+  // 유저 가족 정보 & 송금 내역 가져오기
+  useEffect(()=>{
+    const familylist = GetFamilyInfo(user)
+    if (familylist.isSuccess) {
+      setFamily(familylist.data)
+    }
+
+    // const transferlist = GetTransferList(user)
+
+  },[user])
+
+
   const tmpMembers = [
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
     {
       profile: "라무",
       name: "이수민",
@@ -38,20 +44,7 @@ export default function Home() {
       relationship: "엄마",
       amount: 500000,
       time: "15:07",
-    },
-    {
-      profile: "비비",
-      name: "김옥순",
-      relationship: "엄마",
-      amount: -500000,
-      time: "15:07",
-    },
-    {
-      profile: "비비",
-      name: "김옥순",
-      relationship: "엄마",
-      heart: true,
-      time: "15:07",
+      hearts: false
     },
   ];
 
@@ -66,6 +59,7 @@ export default function Home() {
   const onClickTransferInfo = (transferId:number) => {
 
   }
+
 
   return (
     <HomeContainer>
@@ -94,7 +88,7 @@ export default function Home() {
               relationship={el.relationship}
               amount={el.amount}
               time={el.time}
-              heart={el.heart}
+              heart={el.hearts}
             ></RecentBtn>
           );
         })}
