@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { NotifyBar } from "../../commons/NotifyBar";
 import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
-import { RecentBtn } from "../../components/VideoRecorder/RecentBtn";
+import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
 
 export default function Home() {
