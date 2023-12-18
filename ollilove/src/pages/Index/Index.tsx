@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { Comment, P2 } from "../../commons/Text";
 
 export default function Index() {
+  const handleBtnClick = () => {
+    document.location.href = "/home";
+  };
   return (
     <PageWrapper>
       <img src={MainImage} />
@@ -17,7 +20,7 @@ export default function Index() {
         <P2>특별한 마음을 전해보세요.</P2>
       </ContentContainer>
 
-      <img src={MainButton} />
+      <img onClick={handleBtnClick} src={MainButton} />
     </PageWrapper>
   );
 }
