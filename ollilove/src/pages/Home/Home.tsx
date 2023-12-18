@@ -55,7 +55,14 @@ export default function Home() {
 
   return (
     <HomeContainer>
-      <NotifyBar>새로운 마음이 도착했어요!</NotifyBar>
+      <NotifyBar
+        onClick={() => {
+          console.log("clicke");
+          window.location.href = "/receiveheart";
+        }}
+      >
+        새로운 마음이 도착했어요!
+      </NotifyBar>
       <TransferContainer>
         <H3>영상으로 마음전하기</H3>
         <div>

@@ -6,7 +6,7 @@ import tmpVideo from "../../assets/tmpVideo.svg";
 import { ButtonYellow } from "../../commons/Button";
 import heartLetter from "../../assets/heartLetter.svg";
 
-export default function TransferConfirm() {
+export default function ResponseConfirm() {
   const [realSend, setRealSend] = useState<boolean>(false);
 
   const tmpData = {
@@ -24,7 +24,7 @@ export default function TransferConfirm() {
             <H3>
               {tmpData.name}({tmpData.relationship}) 님에게
             </H3>
-            <H3>{tmpData.amount.toLocaleString()}원과 마음을 보낼게요.</H3>
+            <H3>답장을 보낼게요.</H3>
           </Header>
           <VideoBox>
             <img src={tmpVideo} alt="video" width={250} />
@@ -48,7 +48,7 @@ export default function TransferConfirm() {
             <H3>
               {tmpData.name}({tmpData.relationship}) 님에게
             </H3>
-            <H3>{tmpData.amount.toLocaleString()}원과 마음을 보냈어요.</H3>
+            <H3>답장을 보냈어요.</H3>
           </Header2>
           <VideoBox>
             <img src={heartLetter} alt="letter" width={120} />

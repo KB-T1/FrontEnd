@@ -6,7 +6,7 @@ import { H2 } from "../../commons/Text";
 import camera from "../../assets/camera.svg";
 import { ButtonYellow } from "../../commons/Button";
 
-export default function TransferConfirm() {
+export default function ResponseRecord() {
   const [onRecord, setOnRecord] = useState<boolean>(false);
   return (
     <>
@@ -25,7 +25,7 @@ export default function TransferConfirm() {
           </ButtonYellow>
         </TransferRecordContainer>
       )}
-      {onRecord && <VideoRecorder isReply={false} />}
+      {onRecord && <VideoRecorder isReply={true} />}
     </>
   );
 }
