@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
-const RandomComponent = () => {
+export const RandomComponent = () => {
   const randomId = uuidv4();
 
-  console.log('Random ID:', randomId);
+  const randomIdWithoutHyphen = randomId.replace(/-/g, '');
 
-  return randomId
+  return randomIdWithoutHyphen
 };
