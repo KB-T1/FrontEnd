@@ -6,19 +6,28 @@ import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
-import { GetFamilyInfo, GetTransferList, GetUserInfo } from "../../ReactQuery";
+import { GetFamilyInfo, GetTransferList, } from "../../ReactQuery";
 import { useRecoilState } from "recoil";
-import { userState } from "../../states/userState";
-import { familyState } from "../../states/familyState";
 import { TransferInfo } from "../../types/transferInfo";
 import { FamilyMember } from "../../types/familyMember";
 import { QueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Home() {
   
   //유저 정보 얻어오기
-  const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useState<number>();
+  const userId = localStorage.getItem('userId');
+  
+  const navigate = useNavigate();
+
+  if (userId != null) {
+    setUser(JSON.parse(userId))
+  } 
+  else {
+    navigate('/signup')
+   }
 
   // 유저 가족 정보 & 송금 내역 가져오기
 
