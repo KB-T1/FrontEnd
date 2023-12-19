@@ -5,20 +5,41 @@ import esc from "../assets/esc.png";
 
 interface NavbarProps {
   type: "back" | "esc";
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
-export function Navbar({ type, children }: NavbarProps) {
+export function Navbar({ type, children, onClick }: NavbarProps) {
+  const goBack = () => {
+    window.history.back();
+  };
+
   return (
     <NavbarContainer>
       <NavbarChild>
-        {type === "back" ? <img src={back}></img> : <div></div>}
+        {type === "back" ? (
+          <img
+            onClick={onClick !== undefined ? onClick : goBack}
+            src={back}
+            alt="goBack"
+          ></img>
+        ) : (
+          <div></div>
+        )}
       </NavbarChild>
       <NavbarChild>
         <P2>{children}</P2>
       </NavbarChild>
       <NavbarChild>
-        {type === "esc" ? <img src={esc}></img> : <div></div>}
+        {type === "esc" ? (
+          <img
+            onClick={onClick !== undefined ? onClick : goBack}
+            src={esc}
+            alt="esc"
+          ></img>
+        ) : (
+          <div></div>
+        )}
       </NavbarChild>
     </NavbarContainer>
   );
@@ -33,6 +54,7 @@ const NavbarContainer = styled.div`
   background: #fff;
   padding-left: 20px;
   padding-right: 20px;
+  padding-top: 48px;
   width: 100%;
   height: 28px;
 `;

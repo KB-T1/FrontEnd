@@ -6,11 +6,12 @@ import { P2 } from "./Text";
 
 interface NotifyBarProps {
   children: React.ReactNode;
+  onClick: () => void;
 }
 
-export function NotifyBar({ children }: NotifyBarProps) {
+export function NotifyBar({ children, onClick }: NotifyBarProps) {
   return (
-    <NotifyBarContainer>
+    <NotifyBarContainer onClick={onClick}>
       <img src={heart} />
       <P2>{children}</P2>
       <img src={front} />
