@@ -1,4 +1,5 @@
 export interface User {
-    userId: any;
+    userId: number;
     userName: string;
+    profile: string;
 };

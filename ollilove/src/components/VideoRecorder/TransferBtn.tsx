@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import profilePicLamu from "../../assets/profilePicLamu.svg";
+import profilePicBibi from "../.../assets/profilePicBibi.svg";
+import profilePicColi from "../.../assets/profilePicColi.svg";
+import profilePicKiki from "../.../assets/profilePicKiki.svg";
+import profilePicAlgu from "../.../assets/profilePicAlgu.svg";
 import { P2, Comment, P3 } from "../../commons/Text";
 import smallFront from "../../assets/smallFront.svg";
 import yellowHeart from "../../assets/yellowHeart.svg";
@@ -12,8 +16,20 @@ interface TransferBtnProps {
 
 export function TransferBtn({ profile, name, relationship }: TransferBtnProps) {
   const profileConverter = (profile: string) => {
-    if (profile === "라무") {
+    if (profile === "lamu") {
       return profilePicLamu;
+    }
+    else if (profile === "bibi") {
+      return profilePicBibi;
+    }
+    else if (profile === "coli") {
+      return profilePicColi;
+    }
+    else if (profile === "kiki") {
+      return profilePicKiki;
+    }
+    else {
+      return profilePicAlgu;
     }
   };
 
