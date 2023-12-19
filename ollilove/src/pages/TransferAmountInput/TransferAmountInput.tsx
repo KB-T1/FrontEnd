@@ -4,16 +4,48 @@ import { ButtonGray, ButtonYellow } from "../../commons/Button";
 import { Navbar } from "../../commons/Navbar";
 import { Comment, H3 } from "../../commons/Text";
 import { TextArea2 } from "../../commons/TextArea2";
+import { useLocation, useNavigate } from "react-router-dom";
+import { QueryClient } from "react-query";
+import { GetFamilyInfo } from "../../ReactQuery";
+import { FamilyMember } from "../../types/familyMember";
 
 export default function TransferAmountInput() {
   const [amount, setAmount] = useState<number>(0);
 
   const myMoney = 500000;
+
+  const navigate = useNavigate();
+
+  // props로 받은 state 받기
+  const location = useLocation();
+
+  // 로컬 스토리지에서 유저 정보 받아오기
+
+  const localStorageUserId = localStorage.getItem("userId");
+
+  const [userId, setUserId] = useState<number>(0);
+
+  if (localStorageUserId != null) {
+    setUserId(JSON.parse(localStorageUserId));
+  } else {
+    navigate("/signup");
+  }
+  
+  const queryClient = new QueryClient();
+
+  const user = queryClient.getQueryData(["getUser", userId]);
+
+  // 가족 정보 받아와서 detail 가족 정보 찾기
+  const familyQuery = GetFamilyInfo({userId});
+  const familyData = familyQuery.data as FamilyMember[];
+
+  const targetFamily = familyData.filter((el) => {return el === location.state})[0]
+
   return (
     <TransferAmountInputContainer>
       <Navbar type="esc"> </Navbar>
       <TransferContent>
-        <H3>이수민(따님) 님께</H3>
+        <H3>{targetFamily.userName} 님께</H3>
         <div
           style={{
             display: "flex",

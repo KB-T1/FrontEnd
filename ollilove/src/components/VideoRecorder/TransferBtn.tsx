@@ -12,6 +12,8 @@ interface TransferBtnProps {
   profile: string;
   name: string;
   relationship: string;
+  onClickTransferBtn: () => void;
+  onClickDetailBtn: () => void;
 }
 
 export function TransferBtn({ profile, name, relationship }: TransferBtnProps) {
