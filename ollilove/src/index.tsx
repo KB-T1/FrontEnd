@@ -18,7 +18,6 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <div className="root">
         <App />
-        <ReactQueryDevtools />
       </div>
     </QueryClientProvider>
   </React.StrictMode>
