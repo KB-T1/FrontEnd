@@ -15,6 +15,8 @@ import { profileMatcher } from "../../utils/profileMatcher";
 import { AccountBar } from "../../commons/AccountBar";
 import { TextAreaCode } from "../../commons/TextAreaCode";
 import { TextAreaCodeCreated } from "../../commons/TextAreaCodeCreated";
+import { RandomComponent } from "../../utils/GenRandomId";
+import family from "../../assets/family.svg";
 
 export interface CheckStateType {
   data: { id: number; isChecked: boolean }[];
@@ -22,7 +24,7 @@ export interface CheckStateType {
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const createdCode = "";
+  const createdCode = RandomComponent();
   const [name, setName] = useState<string>("");
   const [profile, setProfile] = useState<string>("lamu");
   const [signupStage, setSignupStage] = useState<number>(0);
@@ -44,6 +46,7 @@ export default function SignUp() {
       },
     ],
   });
+
   const [wholeCheck, setWholeCheck] = useState<boolean>(false);
   const [btnActivate, setBtnActivate] = useState<boolean>(false);
   const [btnActivate2, setBtnActivate2] = useState<boolean>(false);
@@ -122,18 +125,20 @@ export default function SignUp() {
 
   return (
     <SignUpContainer>
-      <Navbar
-        onClick={() => {
-          if (signupStage > 0) {
-            setSignupStage(signupStage - 1);
-          } else {
-            navigate("/");
-          }
-        }}
-        type="back"
-      >
-        올리사랑
-      </Navbar>
+      {signupStage < 6 && (
+        <Navbar
+          onClick={() => {
+            if (signupStage > 0) {
+              setSignupStage(signupStage - 1);
+            } else {
+              navigate("/");
+            }
+          }}
+          type="back"
+        >
+          올리사랑
+        </Navbar>
+      )}
 
       {signupStage === 0 && (
         <>
@@ -259,8 +264,14 @@ export default function SignUp() {
               setName={setInviteCode}
               placeholder="초대코드를 입력해주세요."
             ></TextAreaCode>
-            <P3 onClick={setSignupStage(signupStage + 1)}>
-              초대코드를 만들고 싶어요.
+            <P3>
+              <div
+                onClick={() => {
+                  setSignupStage(signupStage + 1);
+                }}
+              >
+                초대코드를 만들고 싶어요.
+              </div>
             </P3>
             {btnActivate2 && (
               <ButtonYellow
@@ -281,20 +292,34 @@ export default function SignUp() {
             <ModalHeader>
               <H2>초대코드를 생성했어요</H2>
             </ModalHeader>
-            <TextAreaCodeCreated value={inviteCode}></TextAreaCodeCreated>
-            <P3 onClick={setSignupStage(signupStage + 1)}>
-              초대코드를 만들고 싶어요.
-            </P3>
-            {btnActivate2 && (
-              <ButtonYellow
-                onClick={() => {
-                  setSignupStage(signupStage + 2);
-                }}
-              >
-                가입하기
-              </ButtonYellow>
-            )}
-            {!btnActivate2 && <ButtonGray>가입하기</ButtonGray>}
+            <TextAreaCodeCreated value={createdCode}></TextAreaCodeCreated>
+            <ButtonYellow
+              onClick={() => {
+                setSignupStage(signupStage + 1);
+              }}
+            >
+              가입하기
+            </ButtonYellow>
+          </ModalContent>
+        </>
+      )}
+      {signupStage === 6 && (
+        <>
+          <ModalContent>
+            <ModalHeader>
+              <H2>올리사랑에 오신 것을 환영해요!</H2>
+            </ModalHeader>
+            <div className="family">
+              <img src={family} alt="family" />
+            </div>
+            <ButtonYellow
+              onClick={() => {
+                navigate("/home");
+                // localstorage에 정보 담아야함
+              }}
+            >
+              시작하기
+            </ButtonYellow>
           </ModalContent>
         </>
       )}
@@ -355,6 +380,16 @@ const ModalContent = styled.div`
   & > p {
     margin-top: 24px;
     color: #1f9f7d;
+  }
+
+  .family {
+    width: 100%;
+    display: flex;
+
+    & > img {
+      margin: 0 auto;
+      margin-top: 185px;
+    }
   }
 `;
 
