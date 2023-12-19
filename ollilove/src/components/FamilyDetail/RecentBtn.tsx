@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import profileBibi from "../../assets/profileBibi.svg";
+import profileBibi from "../../assets/profilePicBibi.svg";
 import { P2, Comment2 } from "../../commons/Text";
 import heartImg from "../../assets/heart.svg";
 
