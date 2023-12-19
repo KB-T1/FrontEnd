@@ -1,27 +1,11 @@
-import React from "react";
 import styled from "styled-components";
 
 interface TextAreaProps {
-  placeholder: string;
-  nickName: string;
-  setNickName: (str: string) => void;
+  value: string;
 }
 
-export const TextArea1 = ({
-  nickName,
-  setNickName,
-  placeholder,
-}: TextAreaProps) => {
-  return (
-    <Input
-      value={nickName}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-        setNickName(e.target.value);
-      }}
-      type="text"
-      placeholder={placeholder}
-    ></Input>
-  );
+export const TextAreaCodeCreated = ({ value }: TextAreaProps) => {
+  return <Input value={value} type="text"></Input>;
 };
 
 const Input = styled.input`
@@ -34,7 +18,7 @@ const Input = styled.input`
   gap: 10px;
   outline: 0;
   margin-top: 4rem;
-  width: 200px;
+  width: 300px;
   /* Display Bold 20 */
   text-align: center;
   font-family: "KBFG Display";

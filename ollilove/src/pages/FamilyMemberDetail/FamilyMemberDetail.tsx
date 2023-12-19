@@ -19,6 +19,7 @@ export default function FamilyMemberDetail({
   relationship,
 }: FamilyMemberDetailProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [nickName, setNickName] = useState<string>("");
 
   const onClose = () => {
     setIsOpen(false);
@@ -83,7 +84,7 @@ export default function FamilyMemberDetail({
         })}
       </RecordHeartBox>
       {isOpen && <ModalBox></ModalBox>}
-      <Modal isOpen={isOpen} onClose={onClose}></Modal>
+      <Modal nickName={nickName} setNickName={setNickName} isOpen={isOpen} onClose={onClose}></Modal>
     </FamilyMemberDetailContainer>
   );
 }

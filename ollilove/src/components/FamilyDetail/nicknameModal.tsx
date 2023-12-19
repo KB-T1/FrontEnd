@@ -4,13 +4,16 @@ import { H2 } from "../../commons/Text";
 import esc from "../../assets/esc.png";
 import { TextArea1 } from "../../commons/TextArea1";
 import { ButtonYellow } from "../../commons/Button";
+import { genName } from "../../utils/genName";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  nickName: string;
+  setNickName: (str: string) => void;
 }
 
-export function Modal({ isOpen, onClose }: ModalProps) {
+export function Modal({ nickName, setNickName, isOpen, onClose }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,8 +45,22 @@ export function Modal({ isOpen, onClose }: ModalProps) {
           <H2>별명정하기</H2>
           <img src={esc} alt="esc" onClick={onClose} />
         </ModalHeader>
-        <TextArea1 placeholder="별명을 입력해주세요."></TextArea1>
-        <ButtonYellow>확인</ButtonYellow>
+        <TextArea1
+          nickName={nickName}
+          setNickName={setNickName}
+          placeholder="별명을 입력해주세요."
+        ></TextArea1>
+        <ButtonYellow
+          onClick={() => {
+            if (!nickName) {
+              setNickName(genName());
+            } else {
+              onClose();
+            }
+          }}
+        >
+          확인
+        </ButtonYellow>
       </ModalContent>
     </StyledModal>
   );
