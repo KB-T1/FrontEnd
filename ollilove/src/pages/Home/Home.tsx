@@ -1,30 +1,39 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { NotifyBar } from "../../commons/NotifyBar";
 import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
+import { GetFamilyInfo, GetTransferList } from "../../ReactQuery";
+import { useRecoilState } from "recoil";
+import { TransferInfo } from "../../types/transferInfo";
+import { FamilyMember } from "../../types/familyMember";
+import { QueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
+
+  //유저 정보 얻어오기
+  const [user, setUser] = useState<number>();
+  const userId = localStorage.getItem("userId");
+
+  if (userId != null) {
+    setUser(JSON.parse(userId));
+  } else {
+    navigate("/signup");
+  }
+
+  // 유저 가족 정보 & 송금 내역 가져오기
+
+  const queryClient = new QueryClient();
+
+  const familydata = queryClient.getQueryData("getFamilyInfo");
+  const transferlist = queryClient.getQueryData("getTransferList");
+
   const tmpMembers = [
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
     {
       profile: "라무",
       name: "이수민",
@@ -38,22 +47,15 @@ export default function Home() {
       relationship: "엄마",
       amount: 500000,
       time: "15:07",
-    },
-    {
-      profile: "비비",
-      name: "김옥순",
-      relationship: "엄마",
-      amount: -500000,
-      time: "15:07",
-    },
-    {
-      profile: "비비",
-      name: "김옥순",
-      relationship: "엄마",
-      heart: true,
-      time: "15:07",
+      hearts: false,
     },
   ];
+
+  const onClickNotify = () => {};
+
+  const onClickMember = (familyId: number) => {};
+
+  const onClickTransferInfo = (transferId: number) => {};
 
   return (
     <HomeContainer>
@@ -88,7 +90,7 @@ export default function Home() {
               relationship={el.relationship}
               amount={el.amount}
               time={el.time}
-              heart={el.heart}
+              heart={el.hearts}
             ></RecentBtn>
           );
         })}
