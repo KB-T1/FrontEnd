@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Navbar } from "../../commons/Navbar";
 import { H1 } from "../../commons/Text";
+import { Checkbox } from "../../components/SignUp/Checkbox";
 
 export default function SignUp() {
   return (
@@ -10,6 +11,9 @@ export default function SignUp() {
 
       <Content>
         <H1>서비스 이용동의</H1>
+        <Checkbox isChecked={false}>
+          [필수] 개인(신용)정보 수집 이용 동의서 (올리사랑 서비스)
+        </Checkbox>
       </Content>
     </SignUpContainer>
   );

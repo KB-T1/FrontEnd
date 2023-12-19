@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import profilePicLamu from "../../assets/profilePicLamu.svg";
-import profilePicBibi from "../.../assets/profilePicBibi.svg";
-import profilePicColi from "../.../assets/profilePicColi.svg";
-import profilePicKiki from "../.../assets/profilePicKiki.svg";
-import profilePicAlgu from "../.../assets/profilePicAlgu.svg";
+import profilePicBibi from "../../assets/profilePicBibi.svg";
+import profilePicColi from "../../assets/profilePicColi.svg";
+import profilePicKiki from "../../assets/profilePicKiki.svg";
+import profilePicAlgu from "../../assets/profilePicAlgu.svg";
 import { P2, Comment, P3 } from "../../commons/Text";
 import smallFront from "../../assets/smallFront.svg";
 import yellowHeart from "../../assets/yellowHeart.svg";
