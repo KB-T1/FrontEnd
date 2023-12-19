@@ -5,6 +5,7 @@ import { TransferInfo } from "./types/transferInfo";
 import { Account } from "./types/account";
 
 const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/"
+const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/"
 const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/"
 const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/"
 const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/api/history/"'
@@ -97,7 +98,7 @@ interface FamilyInfoParams {
 
 async function getFamily(params: FamilyInfoParams) {
     const [, { info }] = params.queryKey;
-    const response = await fetch(userUrl + `/family/info/`);
+    const response = await fetch(familyUrl + `/family/info/`);
     if (!response.ok) {
         throw new Error("Problem fetching data");
     }
@@ -117,7 +118,6 @@ export const GetFamilyInfo = (
 }
 
 // 송금 전체 내역 관련 query
-
 interface GetTransferAllCondition {
     userId: number;
     count: number;
