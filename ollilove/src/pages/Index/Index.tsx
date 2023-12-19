@@ -10,7 +10,7 @@ export default function Index() {
 
   // 기존에 로그인한 적 있는지 확인
   // 있으면 userState에 넣고 home으로 이동
-  // TODO 없으면 signup으로 이동.
+
   const [user, setUser] = useState<number>();
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -26,6 +26,7 @@ export default function Index() {
 
     navigate(navigateTo);
   };
+  
   return (
     <PageWrapper>
       <img src={MainImage} alt="mainImage" />
