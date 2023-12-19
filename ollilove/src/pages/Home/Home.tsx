@@ -17,46 +17,35 @@ export default function Home() {
   const navigate = useNavigate();
 
   //유저 정보 얻어오기
-  const [user, setUser] = useState<number>();
-  const userId = localStorage.getItem("userId");
+  const localStorageUserId = localStorage.getItem("userId");
 
-  if (userId != null) {
-    setUser(JSON.parse(userId));
+  const [userId, setUserId] = useState<number>(0);
+  if (localStorageUserId != null) {
+    setUserId(JSON.parse(localStorageUserId));
   } else {
     navigate("/signup");
   }
 
+  const queryClient = new QueryClient();
+  
+  const user = queryClient.getQueryData(["getUser", userId]);
+
   // 유저 가족 정보 & 송금 내역 가져오기
 
-  const queryClient = new QueryClient();
+  const familyInfoQuery = GetFamilyInfo({userId});
+  const transferListQuery = GetTransferList({userId:userId, count:10});
 
-  const familydata = queryClient.getQueryData("getFamilyInfo");
-  const transferlist = queryClient.getQueryData("getTransferList");
+  const familydata = familyInfoQuery.data as FamilyMember[]; // Assuming FamilyMember is the correct type
+  const transferlist = transferListQuery.data as TransferInfo[]; 
 
-  const tmpMembers = [
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
-  ];
-  const tmpLists = [
-    {
-      profile: "비비",
-      name: "김옥순",
-      relationship: "엄마",
-      amount: 500000,
-      time: "15:07",
-      hearts: false,
-    },
-  ];
+  if (familyInfoQuery.isFetching || transferListQuery.isFetching) {
+    return (<div>isFetching...</div>)
+  }
 
-  const onClickNotify = () => {};
-
-  const onClickMember = (familyId: number) => {};
-
-  const onClickTransferInfo = (transferId: number) => {};
-
+  if (familyInfoQuery.isError || transferListQuery.isError) {
+    return (<div>isError...</div>)
+  }
+  
   return (
     <HomeContainer>
       <NotifyBar
@@ -69,28 +58,37 @@ export default function Home() {
       <TransferContainer>
         <H3>영상으로 마음전하기</H3>
         <div>
-          {tmpMembers.map((el, i) => {
-            return (
-              <TransferBtn
-                profile={el.profile}
-                name={el.name}
-                relationship={el.relationship}
-              ></TransferBtn>
-            );
-          })}
+          {
+            familydata.map((el, i) => {
+              return (
+                <TransferBtn
+                  key = {i}
+                  profile={el.profile}
+                  name={el.userName}
+                  relationship={el.nickName}
+                ></TransferBtn>
+              );
+            })
+          }
         </div>
       </TransferContainer>
       <RecentContainer>
         <H3>최근 주고받은 마음</H3>
-        {tmpLists.map((el, i) => {
+        {transferlist.map((el, i) => {
           return (
             <RecentBtn
+              key={i}
               profile={el.profile}
-              name={el.name}
-              relationship={el.relationship}
+              name={
+                el.senderId === userId?
+                el.receiverName
+              :
+                el.senderName
+            }
+              relationship={el.nickname}
               amount={el.amount}
               time={el.time}
-              heart={el.hearts}
+              heart={false}
             ></RecentBtn>
           );
         })}
