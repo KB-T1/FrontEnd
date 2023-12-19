@@ -7,17 +7,15 @@ import { ButtonYellow } from "../../commons/Button";
 import heartLetter from "../../assets/heartLetter.svg";
 import money from "../../assets/money.svg";
 import tmpVideo from "../../assets/tmpVideo.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function ReceiveHeart() {
   const [onPlay, setOnPlay] = useState<number>(0);
   const navigate = useNavigate();
 
-  const tmpData = {
-    name: "이수민",
-    relationship: "따님",
-    amount: 500000,
-  };
+ 
+  const location = useLocation();
+  const member = location.state;
 
   return (
     <TransferConfirmContainer>
@@ -26,9 +24,9 @@ export default function ReceiveHeart() {
           <Navbar type="esc"> </Navbar>
           <Header>
             <H3>
-              {tmpData.name}({tmpData.relationship}) 님이
+              {member.userName}({member.nickName}) 님이
             </H3>
-            <H3>{tmpData.amount.toLocaleString()}원과 마음을 보냈어요.</H3>
+            <H3>{member.amount.toLocaleString()}원과 마음을 보냈어요.</H3>
           </Header>
           <VideoBox>
             <img src={heartLetter} alt="letter" width={120} />
@@ -54,7 +52,7 @@ export default function ReceiveHeart() {
           </Navbar>
           <Header2>
             <H3>
-              {tmpData.name}({tmpData.relationship}) 님이 보낸 영상을 보고
+              {member.userName}({member.nickName}) 님이 보낸 영상을 보고
             </H3>
             <H3>용돈을 받아보세요.</H3>
           </Header2>
@@ -75,9 +73,9 @@ export default function ReceiveHeart() {
           <Navbar type="esc"> </Navbar>
           <Header>
             <H3>
-              {tmpData.name}({tmpData.relationship}) 님에게
+              {member.userName}({member.nickName}) 님에게
             </H3>
-            <H3>{tmpData.amount.toLocaleString()}원을 받았어요.</H3>
+            <H3>{member.amount.toLocaleString()}원을 받았어요.</H3>
           </Header>
           <VideoBox>
             <img src={money} alt="letter" width={250} />

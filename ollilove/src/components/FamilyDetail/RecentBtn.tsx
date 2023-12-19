@@ -10,6 +10,7 @@ interface RecentBtnProps {
   amount?: number;
   heart?: boolean;
   time: string;
+  onClickTransfer: () => void;
 }
 
 export function RecentBtn({
@@ -19,9 +20,10 @@ export function RecentBtn({
   heart,
   amount,
   time,
+  onClickTransfer,
 }: RecentBtnProps) {
   return (
-    <RecentBtnContainer>
+    <RecentBtnContainer onClick={onClickTransfer}>
       <div>
         <img src={profileBibi} />
         <div>

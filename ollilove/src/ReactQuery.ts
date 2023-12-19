@@ -2,15 +2,23 @@ import { useQuery, UseQueryOptions } from "react-query";
 import { User } from "./types/user";
 import { FamilyMember } from "./types/familyMember";
 import { TransferInfo } from "./types/transferInfo";
+import { Account } from "./types/account";
 
-const userUrl = "http://kbt1-ollilove-user-service:8080/api/"
-const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/"
+const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/"
+const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/"
+const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/"
+const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/api/history/"'
+
+// **** GET/POST 맞는지 확인
+// **** 파라미터 확인
+// **** 변수명 확인
+
 
 // 회원가입 관련 query
 interface SignUpCondition {
     userName: string;
     profile: string;
-    familyId: number;
+    familyId: string;
 };
 
 interface UserParams {
@@ -43,12 +51,7 @@ export const SignUp = (
     ) => {
     return useQuery<User, Error>(
     ["signup", conditions],
-    ()=>signUpfunc({queryKey: ["signup", {info:conditions}]}),
-    {
-        onSuccess: data => {
-            return data
-        }
-    }
+    ()=>signUpfunc({queryKey: ["signup", {info:conditions}]})
     
     );
 }
@@ -94,7 +97,7 @@ interface FamilyInfoParams {
 
 async function getFamily(params: FamilyInfoParams) {
     const [, { info }] = params.queryKey;
-    const response = await fetch(userUrl);
+    const response = await fetch(userUrl + `/family/info/`);
     if (!response.ok) {
         throw new Error("Problem fetching data");
     }
@@ -108,25 +111,25 @@ export const GetFamilyInfo = (
     conditions: GetFamilyInfoCondition,
     ) => {
     return useQuery<FamilyMember[], Error>(
-    ["user", "family", conditions],
-    ()=>getFamily({queryKey: ["getFamilyInfo", {info:conditions}]})
+    ["getFamily", conditions],
+    ()=>getFamily({queryKey: ["getFamily", {info:conditions}]})
     )
 }
 
-// 송금 내역 관련 query
+// 송금 전체 내역 관련 query
 
-interface GetTransferListCondition {
+interface GetTransferAllCondition {
     userId: number;
-    count: number; // 요청 데이터 개수
+    count: number;
 };
 
-interface TransferListParams {
-    queryKey: [string, { info: GetTransferListCondition }];
+interface TransferAllParams {
+    queryKey: [string, { info: GetTransferAllCondition }];
 };
 
-async function getTransfer(params: TransferListParams) {
+async function getTransferAll(params: TransferAllParams) {
     const [, { info }] = params.queryKey;
-    const response = await fetch(``);
+    const response = await fetch(historyUrl);
     if (!response.ok) {
         throw new Error("Problem fetching data");
     }
@@ -136,11 +139,76 @@ async function getTransfer(params: TransferListParams) {
 }
 
 
-export const GetTransferList = (
-    conditions: GetTransferListCondition,
+export const GetTransferAll = (
+    conditions: GetTransferAllCondition,
     ) => {
     return useQuery<TransferInfo[], Error>(
-    ["history", "all", conditions],
-    ()=>getTransfer({queryKey: ["getTransferList", {info:conditions}]})
+    ["getTransferAll", conditions],
+    ()=>getTransferAll({queryKey: ["getTransferAll", {info:conditions}]})
+);
+}
+
+
+// 계좌 정보 받아오기 관련 query
+interface GetAccountInfoCondition {
+    userId: number;
+};
+
+interface GetAccountParams {
+    queryKey: [string, { info: GetAccountInfoCondition }];
+};
+
+async function getAccount(params: GetAccountParams) {
+    const [, { info }] = params.queryKey;
+    const response = await fetch(accountUrl+`${info.userId}/`);
+    if (!response.ok) {
+        throw new Error("Problem fetching data");
+    }
+    const account = await response.json();
+
+    return account;
+}
+
+
+export const GetAccount = (
+    conditions: GetAccountInfoCondition,
+    ) => {
+    return useQuery<Account, Error>(
+    ["getAccount", conditions],
+    ()=>getAccount({queryKey: ["getAccount", {info:conditions}]})
+    );
+}
+
+
+// 송금 개인 간 내역 관련 query
+
+interface GetTransferPersonalCondition {
+    userId: number;
+    targetUserId: number;
+    count: number;
+};
+
+interface TransferPersonalParams {
+    queryKey: [string, { info: GetTransferPersonalCondition }];
+};
+
+async function getTransferPersonal(params: TransferPersonalParams) {
+    const [, { info }] = params.queryKey;
+    const response = await fetch(historyUrl +`/history`);
+    if (!response.ok) {
+        throw new Error("Problem fetching data");
+    }
+    const TransferList = await response.json();
+    
+    return TransferList;
+}
+
+
+export const GetTransferPersonal = (
+    conditions: GetTransferPersonalCondition,
+    ) => {
+    return useQuery<TransferInfo[], Error>(
+    ["getTransferPersonal", conditions],
+    ()=>getTransferPersonal({queryKey: ["getTransferPersonal", {info:conditions}]})
 );
 }

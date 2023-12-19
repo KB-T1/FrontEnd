@@ -29,6 +29,15 @@ spec:
             limits:
               cpu: 500m
               memory: 1024Mi
+          volumeMounts:
+            - name: media-data-app
+              mountPath: /usr/share/nginx/html/media
+              readOnly: true
+      volumes:
+        - name: media-data-app
+          persistentVolumeClaim:
+            claimName: kbt1-ollilove-app-pvc
+            readOnly: true
 
 ---
 apiVersion: v1

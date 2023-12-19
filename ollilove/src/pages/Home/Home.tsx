@@ -6,7 +6,7 @@ import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
-import { GetFamilyInfo, GetTransferList } from "../../ReactQuery";
+import { GetFamilyInfo, GetTransferAll } from "../../ReactQuery";
 import { useRecoilState } from "recoil";
 import { TransferInfo } from "../../types/transferInfo";
 import { FamilyMember } from "../../types/familyMember";
@@ -17,46 +17,42 @@ export default function Home() {
   const navigate = useNavigate();
 
   //유저 정보 얻어오기
-  const [user, setUser] = useState<number>();
-  const userId = localStorage.getItem("userId");
-
-  if (userId != null) {
-    setUser(JSON.parse(userId));
+  const localStorageUserId = localStorage.getItem("userId");
+  const localStorageFamilyId = localStorage.getItem("familyId");
+  const [userId, setUserId] = useState<number>(0);
+  const [familyId, setFamilyId] = useState<string>("");
+  if (localStorageUserId != null) {
+    setUserId(JSON.parse(localStorageUserId));
   } else {
     navigate("/signup");
   }
 
-  // 유저 가족 정보 & 송금 내역 가져오기
+  if (localStorageFamilyId != null) {
+    setFamilyId(JSON.parse(localStorageFamilyId));
+  } else {
+    navigate("/signup");
+  }
 
   const queryClient = new QueryClient();
+  
+  const user = queryClient.getQueryData(["getUser", userId]);
 
-  const familydata = queryClient.getQueryData("getFamilyInfo");
-  const transferlist = queryClient.getQueryData("getTransferList");
+  // 유저 가족 정보 & 송금 내역 가져오기
 
-  const tmpMembers = [
-    {
-      profile: "라무",
-      name: "이수민",
-      relationship: "따님",
-    },
-  ];
-  const tmpLists = [
-    {
-      profile: "비비",
-      name: "김옥순",
-      relationship: "엄마",
-      amount: 500000,
-      time: "15:07",
-      hearts: false,
-    },
-  ];
+  const familyInfoQuery = GetFamilyInfo({userId});
+  const transferListQuery = GetTransferAll({userId:userId, count: 10});
 
-  const onClickNotify = () => {};
+  const familydata = familyInfoQuery.data as FamilyMember[]; // Assuming FamilyMember is the correct type
+  const transferlist = transferListQuery.data as TransferInfo[]; 
 
-  const onClickMember = (familyId: number) => {};
+  if (familyInfoQuery.isFetching || transferListQuery.isFetching) {
+    return (<div>isFetching...</div>)
+  }
 
-  const onClickTransferInfo = (transferId: number) => {};
-
+  if (familyInfoQuery.isError || transferListQuery.isError) {
+    return (<div>isError...</div>)
+  }
+  
   return (
     <HomeContainer>
       <NotifyBar
@@ -69,28 +65,53 @@ export default function Home() {
       <TransferContainer>
         <H3>영상으로 마음전하기</H3>
         <div>
-          {tmpMembers.map((el, i) => {
-            return (
-              <TransferBtn
-                profile={el.profile}
-                name={el.name}
-                relationship={el.relationship}
-              ></TransferBtn>
-            );
-          })}
+          {
+            familydata.map((el, i) => {
+              return (
+                <TransferBtn
+                  key = {i}
+                  profile={el.profile}
+                  name={el.userName}
+                  relationship={el.nickName}
+                  onClickDetailBtn={()=>{
+                    navigate("/familymemberdetail", { state: el.userId })
+                  }}
+                  onClickTransferBtn={
+                    ()=>{
+                      navigate("/transferamountinput", { state: el.userId })
+                    }
+                  }
+                ></TransferBtn>
+              );
+            })
+          }
         </div>
       </TransferContainer>
       <RecentContainer>
         <H3>최근 주고받은 마음</H3>
-        {tmpLists.map((el, i) => {
+        {transferlist.map((el, i) => {
           return (
             <RecentBtn
+              key={i}
               profile={el.profile}
-              name={el.name}
-              relationship={el.relationship}
+              name={
+                el.senderId === userId?
+                el.receiverName
+              :
+                el.senderName
+            }
+              relationship={el.nickname}
               amount={el.amount}
-              time={el.time}
-              heart={el.hearts}
+              time={el.historyCreatedAt}
+              heart={false}
+              onClickTransfer={()=>{
+                navigate("/receiveheart", {state: {historyId:el.historyId, amount:el.amount, videoUrl:el.videoUrl, targetName: 
+                  el.senderId === userId ?
+                  el.receiverName
+                  :
+                  el.senderName
+                , nickname: el.nickname}});
+              }}
             ></RecentBtn>
           );
         })}
