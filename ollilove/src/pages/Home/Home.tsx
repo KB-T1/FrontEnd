@@ -6,32 +6,29 @@ import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
-import { GetFamilyInfo, GetTransferList, } from "../../ReactQuery";
+import { GetFamilyInfo, GetTransferList } from "../../ReactQuery";
 import { useRecoilState } from "recoil";
 import { TransferInfo } from "../../types/transferInfo";
 import { FamilyMember } from "../../types/familyMember";
 import { QueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Home() {
-  
-  //유저 정보 얻어오기
-  const [user, setUser] = useState<number>();
-  const userId = localStorage.getItem('userId');
-  
   const navigate = useNavigate();
 
+  //유저 정보 얻어오기
+  const [user, setUser] = useState<number>();
+  const userId = localStorage.getItem("userId");
+
   if (userId != null) {
-    setUser(JSON.parse(userId))
-  } 
-  else {
-    navigate('/signup')
-   }
+    setUser(JSON.parse(userId));
+  } else {
+    navigate("/signup");
+  }
 
   // 유저 가족 정보 & 송금 내역 가져오기
 
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
   const familydata = queryClient.getQueryData("getFamilyInfo");
   const transferlist = queryClient.getQueryData("getTransferList");
@@ -50,29 +47,21 @@ export default function Home() {
       relationship: "엄마",
       amount: 500000,
       time: "15:07",
-      hearts: false
+      hearts: false,
     },
   ];
 
-  const onClickNotify = () => {
+  const onClickNotify = () => {};
 
-  }
+  const onClickMember = (familyId: number) => {};
 
-  const onClickMember = (familyId:number) => {
+  const onClickTransferInfo = (transferId: number) => {};
 
-  }
-
-  const onClickTransferInfo = (transferId:number) => {
-
-  }
-
-  
   return (
     <HomeContainer>
       <NotifyBar
         onClick={() => {
-          console.log("clicke");
-          window.location.href = "/receiveheart";
+          navigate("/receiveheart");
         }}
       >
         새로운 마음이 도착했어요!

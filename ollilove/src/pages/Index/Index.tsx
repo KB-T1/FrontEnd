@@ -2,31 +2,33 @@ import MainImage from "../../assets/landingMainImage.svg";
 import MainButton from "../../assets/landingButton.svg";
 import styled from "styled-components";
 import { Comment, P2 } from "../../commons/Text";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function Index() {
+  const navigate = useNavigate();
 
   // 기존에 로그인한 적 있는지 확인
   // 있으면 userState에 넣고 home으로 이동
   // TODO 없으면 signup으로 이동.
-
   const [user, setUser] = useState<number>();
-  useEffect(()=> {
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
 
-    const userId = localStorage.getItem('userId');
-    
     if (userId != null) {
-      setUser(JSON.parse(userId))
+      setUser(JSON.parse(userId));
     }
-
-  })
+  });
 
   const handleBtnClick = () => {
-    document.location.href = "/home";
+    const userId = localStorage.getItem("userId");
+    const navigateTo = userId ? "/home" : "signup";
+
+    navigate(navigateTo);
   };
   return (
     <PageWrapper>
-      <img src={MainImage} />
+      <img src={MainImage} alt="mainImage" />
 
       <HeadingContainer>
         <h1>올리사랑</h1>
@@ -37,7 +39,7 @@ export default function Index() {
         <P2>특별한 마음을 전해보세요.</P2>
       </ContentContainer>
 
-      <img onClick={handleBtnClick} src={MainButton} />
+      <img onClick={handleBtnClick} src={MainButton} alt="start" />
     </PageWrapper>
   );
 }
