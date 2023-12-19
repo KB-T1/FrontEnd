@@ -66,7 +66,15 @@ export default function SignUp() {
       <Content>
         <H1>서비스 이용동의</H1>
 
-        <CheckboxContainer></CheckboxContainer>
+        <CheckboxContainer>
+          <img
+            src={}
+            alt="whole"
+            onClick={() => {
+              setWholeCheck(!wholeCheck);
+            }}
+          />
+        </CheckboxContainer>
         {termsAndConditions.map((el, i) => (
           <Checkbox
             checkState={checkState}
