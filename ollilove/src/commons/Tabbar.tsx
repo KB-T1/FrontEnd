@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { barState } from "../states/userState";
+import { barState } from "../states/barstate";
 
 import { Comment2 } from "./Text";
 

@@ -6,7 +6,7 @@ import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
-import { GetFamilyInfo, GetTransferList } from "../../ReactQuery";
+import { GetFamilyInfo, GetTransferAll } from "../../ReactQuery";
 import { useRecoilState } from "recoil";
 import { TransferInfo } from "../../types/transferInfo";
 import { FamilyMember } from "../../types/familyMember";
@@ -18,10 +18,17 @@ export default function Home() {
 
   //유저 정보 얻어오기
   const localStorageUserId = localStorage.getItem("userId");
-
+  const localStorageFamilyId = localStorage.getItem("familyId");
   const [userId, setUserId] = useState<number>(0);
+  const [familyId, setFamilyId] = useState<string>("");
   if (localStorageUserId != null) {
     setUserId(JSON.parse(localStorageUserId));
+  } else {
+    navigate("/signup");
+  }
+
+  if (localStorageFamilyId != null) {
+    setFamilyId(JSON.parse(localStorageFamilyId));
   } else {
     navigate("/signup");
   }
@@ -33,7 +40,7 @@ export default function Home() {
   // 유저 가족 정보 & 송금 내역 가져오기
 
   const familyInfoQuery = GetFamilyInfo({userId});
-  const transferListQuery = GetTransferList({userId:userId, count:10});
+  const transferListQuery = GetTransferAll({userId:userId, count: 10});
 
   const familydata = familyInfoQuery.data as FamilyMember[]; // Assuming FamilyMember is the correct type
   const transferlist = transferListQuery.data as TransferInfo[]; 
@@ -66,6 +73,14 @@ export default function Home() {
                   profile={el.profile}
                   name={el.userName}
                   relationship={el.nickName}
+                  onClickDetailBtn={()=>{
+                    navigate("/familymemberdetail", { state: el.userId })
+                  }}
+                  onClickTransferBtn={
+                    ()=>{
+                      navigate("/transferamountinput", { state: el.userId })
+                    }
+                  }
                 ></TransferBtn>
               );
             })
@@ -87,8 +102,16 @@ export default function Home() {
             }
               relationship={el.nickname}
               amount={el.amount}
-              time={el.time}
+              time={el.historyCreatedAt}
               heart={false}
+              onClickTransfer={()=>{
+                navigate("/receiveheart", {state: {historyId:el.historyId, amount:el.amount, videoUrl:el.videoUrl, targetName: 
+                  el.senderId === userId ?
+                  el.receiverName
+                  :
+                  el.senderName
+                , nickname: el.nickname}});
+              }}
             ></RecentBtn>
           );
         })}

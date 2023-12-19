@@ -12,6 +12,7 @@ export default function Index() {
   // 있으면 userState에 넣고 home으로 이동
 
   const [user, setUser] = useState<number>();
+
   useEffect(() => {
     const userId = localStorage.getItem("userId");
 
@@ -21,10 +22,12 @@ export default function Index() {
   });
 
   const handleBtnClick = () => {
+
     const userId = localStorage.getItem("userId");
     const navigateTo = userId ? "/home" : "signup";
 
     navigate(navigateTo);
+    
   };
   
   return (

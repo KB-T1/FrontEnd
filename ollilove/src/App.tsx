@@ -4,7 +4,7 @@ import "./App.css";
 import { RecoilRoot } from "recoil";
 import { Routes, Route, BrowserRouter, useNavigate } from "react-router-dom";
 import TransferRecord from "./pages/TransferRecord/TransferRecord";
-import FamilyMemberDetail from "./pages/FamilyMemberDetail.tsx/FamilyMemberDetail";
+import FamilyMemberDetail from "./pages/FamilyMemberDetail/FamilyMemberDetail";
 import ShortsDetail from "./pages/ShortsDetail/ShortsDetail";
 import TransferAmountInput from "./pages/TransferAmountInput/TransferAmountInput";
 import TransferConfirm from "./pages/TransferConfirm/TransferConfirm";
@@ -23,11 +23,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/familymemberdetail" element={<FamilyMemberDetail />} />
+          <Route path="/familymemberdetail/:memberid/" element={<FamilyMemberDetail />} />
           <Route path="/shortsdetail" element={<ShortsDetail />} />
           <Route path="/shortslist" element={<ShortsList />} />
           <Route
-            path="/transferAmountinput"
+            path="/transferAmountinput/:memberid/"
             element={<TransferAmountInput />}
           />
           <Route path="/transferconfirm" element={<TransferConfirm />} />
