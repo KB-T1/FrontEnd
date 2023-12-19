@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { NotifyBar } from "../../commons/NotifyBar";
 import { Tabbar } from "../../commons/Tabbar";
@@ -7,6 +8,7 @@ import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
 
 export default function Home() {
+  const navigate = useNavigate();
   const tmpMembers = [
     {
       profile: "라무",
@@ -57,8 +59,7 @@ export default function Home() {
     <HomeContainer>
       <NotifyBar
         onClick={() => {
-          console.log("clicke");
-          window.location.href = "/receiveheart";
+          navigate("/receiveheart");
         }}
       >
         새로운 마음이 도착했어요!

@@ -5,9 +5,11 @@ import { H3 } from "../../commons/Text";
 import tmpVideo from "../../assets/tmpVideo.svg";
 import { ButtonYellow } from "../../commons/Button";
 import heartLetter from "../../assets/heartLetter.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function TransferConfirm() {
   const [realSend, setRealSend] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const tmpData = {
     name: "이수민",
@@ -55,7 +57,7 @@ export default function TransferConfirm() {
           </VideoBox>
           <ButtonYellow
             onClick={() => {
-              window.location.href = "/home";
+              navigate("/home");
             }}
           >
             완료

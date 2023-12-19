@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import videoStartImg from "../../assets/videoStart.png";
 import videoPlayImg from "../../assets/videoPlay.png";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 // 동영상 촬영을 위한 컴포넌트
 // https://9ummy.tistory.com/24 참고
@@ -12,6 +13,7 @@ interface VideoRecorderProps {
 }
 
 export default function VideoRecorder({ isReply }: VideoRecorderProps) {
+  const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const videoChunks = useRef<Blob[]>([]);
@@ -102,7 +104,8 @@ export default function VideoRecorder({ isReply }: VideoRecorderProps) {
     setIsRecorded(false);
     reset();
 
-    window.location.href = isReply ? "/responseconfirm" : "/transferconfirm";
+    const navigateTo = isReply ? "/responseconfirm" : "/transferconfirm";
+    navigate(`${navigateTo}`);
   };
 
   //사용자 정의 Hook

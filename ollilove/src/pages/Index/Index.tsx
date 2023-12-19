@@ -2,14 +2,16 @@ import MainImage from "../../assets/landingMainImage.svg";
 import MainButton from "../../assets/landingButton.svg";
 import styled from "styled-components";
 import { Comment, P2 } from "../../commons/Text";
+import { useNavigate } from "react-router-dom";
 
 export default function Index() {
+  const navigate = useNavigate();
   const handleBtnClick = () => {
-    document.location.href = "/home";
+    navigate("/home");
   };
   return (
     <PageWrapper>
-      <img src={MainImage} />
+      <img src={MainImage} alt="mainImage" />
 
       <HeadingContainer>
         <h1>올리사랑</h1>
@@ -20,7 +22,7 @@ export default function Index() {
         <P2>특별한 마음을 전해보세요.</P2>
       </ContentContainer>
 
-      <img onClick={handleBtnClick} src={MainButton} />
+      <img onClick={handleBtnClick} src={MainButton} alt="start" />
     </PageWrapper>
   );
 }

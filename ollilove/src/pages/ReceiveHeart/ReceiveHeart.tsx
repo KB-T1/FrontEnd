@@ -7,9 +7,11 @@ import { ButtonYellow } from "../../commons/Button";
 import heartLetter from "../../assets/heartLetter.svg";
 import money from "../../assets/money.svg";
 import tmpVideo from "../../assets/tmpVideo.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function ReceiveHeart() {
   const [onPlay, setOnPlay] = useState<number>(0);
+  const navigate = useNavigate();
 
   const tmpData = {
     name: "이수민",
@@ -82,7 +84,7 @@ export default function ReceiveHeart() {
           </VideoBox>
           <ButtonYellow
             onClick={() => {
-              window.location.href = "/responserecord";
+              navigate("/responserecord");
             }}
           >
             영상편자로 답장하기
