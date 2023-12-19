@@ -6,8 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 export default function Index() {
   const navigate = useNavigate();
+
+  // localstorage userId
   const handleBtnClick = () => {
-    navigate("/home");
+    const userId = localStorage.getItem("userId");
+    const navigateTo = userId ? "/home" : "signup";
+
+    navigate(navigateTo);
   };
   return (
     <PageWrapper>

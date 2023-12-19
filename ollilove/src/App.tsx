@@ -14,6 +14,7 @@ import ShortsList from "./pages/ShortsList/ShortsList";
 import ReceiveHeart from "./pages/ReceiveHeart/ReceiveHeart";
 import ResponseRecord from "./pages/ResponseRecord/ResponseRecord";
 import ResponseConfirm from "./pages/ResponseConfirm/ResponseConfirm";
+import SignUp from "./pages/SignUp/SignUp";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/receiveheart" element={<ReceiveHeart />} />
           <Route path="/responserecord" element={<ResponseRecord />} />
           <Route path="/responseconfirm" element={<ResponseConfirm />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
