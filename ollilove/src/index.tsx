@@ -5,6 +5,7 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,6 +18,7 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <div className="root">
         <App />
+        <ReactQueryDevtools />
       </div>
     </QueryClientProvider>
   </React.StrictMode>

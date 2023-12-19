@@ -31,7 +31,7 @@ export const GetUserInfo = (
     ) => {
     return useQuery<User, Error>(
     ["signup", conditions],
-    ()=>getUser({queryKey: ["", {info:conditions}]}),
+    ()=>getUser({queryKey: ["getUserInfo", {info:conditions}]}),
     {
         onSuccess: data => {
             return data
@@ -67,7 +67,7 @@ export const GetFamilyInfo = (
     ) => {
     return useQuery<FamilyMember[], Error>(
     ["user", "family", conditions],
-    ()=>getFamily({queryKey: ["", {info:conditions}]}),
+    ()=>getFamily({queryKey: ["getFamilyInfo", {info:conditions}]}),
     {
         onSuccess: data => {
             return data
@@ -103,7 +103,7 @@ export const GetTransferList = (
     ) => {
     return useQuery<TransferInfo[], Error>(
     ["history", "all", conditions],
-    ()=>getTransfer({queryKey: ["", {info:conditions}]}),
+    ()=>getTransfer({queryKey: ["getTransferList", {info:conditions}]}),
     {
         onSuccess: data => {
             return data

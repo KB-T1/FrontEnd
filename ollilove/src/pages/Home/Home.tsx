@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { NotifyBar } from "../../commons/NotifyBar";
@@ -10,25 +10,22 @@ import { GetFamilyInfo, GetTransferList, GetUserInfo } from "../../ReactQuery";
 import { useRecoilState } from "recoil";
 import { userState } from "../../states/userState";
 import { familyState } from "../../states/familyState";
-import { Navigate } from "react-router-dom";
+import { TransferInfo } from "../../types/transferInfo";
+import { FamilyMember } from "../../types/familyMember";
+import { QueryClient } from "react-query";
+
 
 export default function Home() {
   
   //유저 정보 얻어오기
   const [user, setUser] = useRecoilState(userState);
-  const [family, setFamily] = useRecoilState(familyState);
 
   // 유저 가족 정보 & 송금 내역 가져오기
-  useEffect(()=>{
-    const familylist = GetFamilyInfo(user)
-    if (familylist.isSuccess) {
-      setFamily(familylist.data)
-    }
 
-    // const transferlist = GetTransferList(user)
+  const queryClient = new QueryClient()
 
-  },[user])
-
+  const familydata = queryClient.getQueryData("getFamilyInfo");
+  const transferlist = queryClient.getQueryData("getTransferList");
 
   const tmpMembers = [
     {
@@ -60,7 +57,7 @@ export default function Home() {
 
   }
 
-
+  
   return (
     <HomeContainer>
       <NotifyBar>새로운 마음이 도착했어요!</NotifyBar>
