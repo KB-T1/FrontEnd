@@ -2,6 +2,7 @@ FROM node:alpine as builder
 
 WORKDIR /app
 COPY . ./
+COPY ./.npmrc ~/.npmrc
 
 # 디렉토리 변경
 WORKDIR /app/ollilove
