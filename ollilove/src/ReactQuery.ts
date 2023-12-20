@@ -3,13 +3,15 @@ import { User } from "./types/user";
 import { FamilyMember } from "./types/familyMember";
 import { TransferInfo } from "./types/transferInfo";
 import { Account } from "./types/account";
+import axios from "axios";
 
-const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/"
-const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/"
-const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/"
-const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/"
-const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/api/history/"'
+const baseUrl = "http://kbt1-ollilove-user-service:8080/api/";
 
+const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/";
+const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/";
+const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/";
+const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/";
+const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/api/history/"';
 
 // **** GET/POST 맞는지 확인
 // **** 파라미터 확인
@@ -28,21 +30,21 @@ interface UserParams {
 
 async function signUpfunc(params: UserParams) {
   const [, { info }] = params.queryKey;
-  const response = await fetch(userUrl + "signup", {
-    method: "POST",
-    body: JSON.stringify({ info }),
+  const response = await axios.post(`${userUrl}signup`, {
+    ...info,
   });
-  if (!response.ok) {
+  if (response.status == 200) {
+    const data = await response.data;
+    console.log(data);
+
+    localStorage.setItem("userId", data.data.userId);
+    localStorage.setItem("userName", data.data.userName);
+    localStorage.setItem("profile", data.data.profile);
+    localStorage.setItem("familyId", info.familyId.toString());
+    return data;
+  } else {
     throw new Error("Problem fetching data");
   }
-  const user = await response.json();
-
-  localStorage.setItem("userId", user.userId);
-  localStorage.setItem("userName", user.userName);
-  localStorage.setItem("profile", user.profile);
-  localStorage.setItem("familyId", info.familyId.toString());
-
-  return user;
 }
 
 export const useSignUp = (conditions: SignUpCondition) => {
@@ -67,12 +69,18 @@ interface GetUserInfoCondition {
 }
 
 interface GetUserParams {
-  queryKey: [string, { info: GetUserInfoCondition }];
+  queryKey: [string, {}];
 }
 
 async function getUser(params: GetUserParams) {
-  const [, { info }] = params.queryKey;
-  const response = await fetch(userUrl + `${info.userId}/`);
+  const [, {}] = params.queryKey;
+
+  const localStorageUserId = localStorage.getItem("userId");
+  if (!localStorageUserId) {
+    throw new Error("user id not exist");
+  }
+
+  const response = await fetch(userUrl + `${localStorageUserId}/`);
   if (!response.ok) {
     throw new Error("Problem fetching data");
   }
@@ -81,7 +89,7 @@ async function getUser(params: GetUserParams) {
   return user;
 }
 
-export const GetUser = (conditions: GetUserInfoCondition) => {
+export const useGetUser = (conditions: GetUserInfoCondition) => {
   return useQuery<User, Error>(["getUser", conditions], () =>
     getUser({ queryKey: ["getUser", { info: conditions }] })
   );
@@ -98,7 +106,8 @@ interface FamilyInfoParams {
 
 async function getFamily(params: FamilyInfoParams) {
   const [, { info }] = params.queryKey;
-  const response = await fetch(userUrl + `/family/info/`);
+  const userId = localStorage;
+  const response = await fetch(`${baseUrl}${info.userId}/family`);
   if (!response.ok) {
     throw new Error("Problem fetching data");
   }
@@ -107,7 +116,7 @@ async function getFamily(params: FamilyInfoParams) {
   return familyInfoList;
 }
 
-export const GetFamilyInfo = (conditions: GetFamilyInfoCondition) => {
+export const useGetFamilyInfo = (conditions: GetFamilyInfoCondition) => {
   return useQuery<FamilyMember[], Error>(["getFamily", conditions], () =>
     getFamily({ queryKey: ["getFamily", { info: conditions }] })
   );
@@ -134,7 +143,7 @@ async function getTransferAll(params: TransferAllParams) {
   return TransferList;
 }
 
-export const GetTransferAll = (conditions: GetTransferAllCondition) => {
+export const useGetTransferAll = (conditions: GetTransferAllCondition) => {
   return useQuery<TransferInfo[], Error>(["getTransferAll", conditions], () =>
     getTransferAll({ queryKey: ["getTransferAll", { info: conditions }] })
   );
@@ -160,7 +169,7 @@ async function getAccount(params: GetAccountParams) {
   return account;
 }
 
-export const GetAccount = (conditions: GetAccountInfoCondition) => {
+export const useGetAccount = (conditions: GetAccountInfoCondition) => {
   return useQuery<Account, Error>(["getAccount", conditions], () =>
     getAccount({ queryKey: ["getAccount", { info: conditions }] })
   );
@@ -189,7 +198,7 @@ async function getTransferPersonal(params: TransferPersonalParams) {
   return TransferList;
 }
 
-export const GetTransferPersonal = (
+export const useGetTransferPersonal = (
   conditions: GetTransferPersonalCondition
 ) => {
   return useQuery<TransferInfo[], Error>(

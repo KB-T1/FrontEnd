@@ -122,7 +122,7 @@ export default function SignUp() {
   }, [checkState]);
 
   useEffect(() => {
-    if (inviteCode) {
+    if (inviteCode.length === 32) {
       setBtnActivate2(true);
     } else {
       setBtnActivate2(false);
@@ -288,7 +288,9 @@ export default function SignUp() {
                 가입하기
               </ButtonYellow>
             )}
-            {!btnActivate2 && <ButtonGray>가입하기</ButtonGray>}
+            {!btnActivate2 && (
+              <ButtonGray>초대코드가 유효하지 않아요.</ButtonGray>
+            )}
           </ModalContent>
         </>
       )}
@@ -326,6 +328,7 @@ export default function SignUp() {
                   profile: profile,
                 });
                 mutation.mutate();
+                navigate("/home");
               }}
             >
               시작하기
