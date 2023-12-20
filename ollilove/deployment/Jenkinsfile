@@ -45,8 +45,8 @@ podTemplate(
 
 			stage("Build React Scripts") {
 				container("node") {
-					sh "yarn install --cache-folder ${WORKSPACE}/ollilove/yarn-cache"
 					sh "cd ollilove"
+					sh "yarn install --cache-folder ${WORKSPACE}/yarn-cache"
 					sh "npm install"
 					sh "yarn build"
 				}
