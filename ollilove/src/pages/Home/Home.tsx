@@ -24,8 +24,8 @@ export default function Home() {
 
   const [familydata, setFamilyData] = useState<FamilyMember[]>();
   const [transferList, setTransferList] = useState<TransferInfo[]>();
-  const familyInfoQuery = useGetFamilyInfo({ userId });
-  const transferListQuery = useGetTransferAll({ userId: userId, count: 10 });
+  const familyInfoQuery = useGetFamilyInfo({});
+  const transferListQuery = useGetTransferAll({});
 
   useEffect(() => {
     const localStorageUserId = localStorage.getItem("userId");
