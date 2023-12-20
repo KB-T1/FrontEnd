@@ -6,7 +6,8 @@ import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
-import { GetFamilyInfo, GetTransferAll } from "../../ReactQuery";
+import { useGetFamilyInfo, useGetTransferAll } from "../../ReactQuery";
+import { useRecoilState } from "recoil";
 import { TransferInfo } from "../../types/transferInfo";
 import { FamilyMember } from "../../types/familyMember";
 import { QueryClient } from "react-query";
@@ -16,29 +17,43 @@ export default function Home() {
   const navigate = useNavigate();
 
   //유저 정보 얻어오기
-  const localStorageUserId = localStorage.getItem("userId");
-  const localStorageFamilyId = localStorage.getItem("familyId");
   const [userId, setUserId] = useState<number>(0);
   const [familyId, setFamilyId] = useState<string>("");
 
-  if (localStorageUserId !== null && localStorageFamilyId != null) {
-    setFamilyId(JSON.parse(localStorageFamilyId));
-    setUserId(JSON.parse(localStorageUserId));
-  } else {
-    navigate("/signup");
-  }
-
   const queryClient = new QueryClient();
+
+  const [familydata, setFamilyData] = useState<FamilyMember[]>();
+  const [transferList, setTransferList] = useState<TransferInfo[]>();
+  const familyInfoQuery = useGetFamilyInfo({ userId });
+  const transferListQuery = useGetTransferAll({ userId: userId, count: 10 });
+
+  useEffect(() => {
+    const localStorageUserId = localStorage.getItem("userId");
+    const localStorageFamilyId = localStorage.getItem("familyId");
+
+    if (localStorageUserId !== null && localStorageFamilyId != null) {
+      setFamilyId(localStorageFamilyId);
+      setUserId(Number(localStorageUserId));
+    } else {
+      navigate("/signup");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (familyInfoQuery.isSuccess) {
+      setFamilyData(familyInfoQuery.data);
+    }
+  }, [familyInfoQuery.isSuccess]);
+
+  useEffect(() => {
+    if (transferListQuery.isSuccess) {
+      setTransferList(transferListQuery.data);
+    }
+  }, [transferListQuery.isSuccess]);
 
   const user = queryClient.getQueryData(["getUser", userId]);
 
   // 유저 가족 정보 & 송금 내역 가져오기
-
-  const familyInfoQuery = GetFamilyInfo({ userId });
-  const transferListQuery = GetTransferAll({ userId: userId, count: 10 });
-
-  const familydata = familyInfoQuery.data as FamilyMember[]; // Assuming FamilyMember is the correct type
-  const transferlist = transferListQuery.data as TransferInfo[];
 
   if (familyInfoQuery.isFetching || transferListQuery.isFetching) {
     return <div>isFetching...</div>;
@@ -60,42 +75,57 @@ export default function Home() {
       <TransferContainer>
         <H3>영상으로 마음전하기</H3>
         <div>
-          {familydata.map((el, i) => {
-            return (
-              <TransferBtn
-                key={i}
-                profile={el.profile}
-                name={el.userName}
-                relationship={el.nickName}
-                onClickDetailBtn={() => {
-                  navigate("/familymemberdetail", { state: el.userId });
-                }}
-                onClickTransferBtn={() => {
-                  navigate("/transferamountinput", { state: el.userId });
-                }}
-              ></TransferBtn>
-            );
-          })}
+          {familyInfoQuery.isSuccess &&
+            familydata &&
+            familydata.map((el, i) => {
+              return (
+                <TransferBtn
+                  key={i}
+                  profile={el.profile}
+                  name={el.userName}
+                  relationship={el.nickName}
+                  onClickDetailBtn={() => {
+                    navigate("/familymemberdetail", { state: el.userId });
+                  }}
+                  onClickTransferBtn={() => {
+                    navigate("/transferamountinput", { state: el.userId });
+                  }}
+                ></TransferBtn>
+              );
+            })}
         </div>
       </TransferContainer>
       <RecentContainer>
         <H3>최근 주고받은 마음</H3>
-        {transferlist.map((el, i) => {
-          return (
-            <RecentBtn
-              key={i}
-              profile={el.profile}
-              name={el.senderId === userId ? el.receiverName : el.senderName}
-              relationship={el.nickname}
-              amount={el.amount}
-              time={el.historyCreatedAt}
-              heart={false}
-              onClickTransfer={()=>{
-                navigate("/receiveheart", {state: el});
-              }}
-            ></RecentBtn>
-          );
-        })}
+        {transferListQuery.isSuccess &&
+          transferList &&
+          transferList.map((el, i) => {
+            return (
+              <RecentBtn
+                key={i}
+                profile={el.profile}
+                name={el.senderId === userId ? el.receiverName : el.senderName}
+                relationship={el.nickname}
+                amount={el.amount}
+                time={el.historyCreatedAt}
+                heart={false}
+                onClickTransfer={() => {
+                  navigate("/receiveheart", {
+                    state: {
+                      historyId: el.historyId,
+                      amount: el.amount,
+                      videoUrl: el.videoUrl,
+                      targetName:
+                        el.senderId === userId
+                          ? el.receiverName
+                          : el.senderName,
+                      nickname: el.nickname,
+                    },
+                  });
+                }}
+              ></RecentBtn>
+            );
+          })}
       </RecentContainer>
       <Tabbar />
     </HomeContainer>
