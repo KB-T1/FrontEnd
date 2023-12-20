@@ -7,7 +7,6 @@ import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
 import { GetFamilyInfo, GetTransferAll } from "../../ReactQuery";
-import { useRecoilState } from "recoil";
 import { TransferInfo } from "../../types/transferInfo";
 import { FamilyMember } from "../../types/familyMember";
 import { QueryClient } from "react-query";

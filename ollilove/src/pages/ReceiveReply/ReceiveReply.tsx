@@ -7,7 +7,9 @@ import { ButtonYellow } from "../../commons/Button";
 import tmpVideo from "../../assets/tmpVideo.svg";
 
 export function ReceiveReply() {
+
   const [onPlay, setOnPlay] = useState<boolean>(false);
+  
   const member = {
     userName: "이수민",
     nickName: "따님",
