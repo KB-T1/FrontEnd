@@ -9,7 +9,8 @@ import axios from "axios";
 const baseUrl = "http://kbt1-ollilove-user-service:8080/api/";
 const testUrl = "https://kbt1-ollilove-user-api.165.192.105.60.nip.io/";
 
-const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/";
+const userUrl =
+  "http://kbt1-ollilove-user-service.kbt1.svc.cluster.local:8080/api/user/";
 const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/";
 const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/";
 const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/";
