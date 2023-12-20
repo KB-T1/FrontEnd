@@ -79,7 +79,7 @@ async function getUser(params: GetUserParams) {
   return user;
 }
 
-export const GetUser = (conditions: GetUserInfoCondition) => {
+export const useGetUser = (conditions: GetUserInfoCondition) => {
   return useQuery<User, Error>(["getUser", conditions], () =>
     getUser({ queryKey: ["getUser", { info: conditions }] })
   );
@@ -105,7 +105,7 @@ async function getFamily(params: FamilyInfoParams) {
   return familyInfoList;
 }
 
-export const GetFamilyInfo = (conditions: GetFamilyInfoCondition) => {
+export const useGetFamilyInfo = (conditions: GetFamilyInfoCondition) => {
   return useQuery<FamilyMember[], Error>(["getFamily", conditions], () =>
     getFamily({ queryKey: ["getFamily", { info: conditions }] })
   );
@@ -133,7 +133,7 @@ async function getTransferAll(params: TransferAllParams) {
   return TransferList;
 }
 
-export const GetTransferAll = (conditions: GetTransferAllCondition) => {
+export const useGetTransferAll = (conditions: GetTransferAllCondition) => {
   return useQuery<TransferInfo[], Error>(["getTransferAll", conditions], () =>
     getTransferAll({ queryKey: ["getTransferAll", { info: conditions }] })
   );
@@ -159,7 +159,7 @@ async function getAccount(params: GetAccountParams) {
   return account;
 }
 
-export const GetAccount = (conditions: GetAccountInfoCondition) => {
+export const useGetAccount = (conditions: GetAccountInfoCondition) => {
   return useQuery<Account, Error>(["getAccount", conditions], () =>
     getAccount({ queryKey: ["getAccount", { info: conditions }] })
   );
@@ -188,7 +188,7 @@ async function getTransferPersonal(params: TransferPersonalParams) {
   return TransferList;
 }
 
-export const GetTransferPersonal = (
+export const useGetTransferPersonal = (
   conditions: GetTransferPersonalCondition
 ) => {
   return useQuery<TransferInfo[], Error>(

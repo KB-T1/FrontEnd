@@ -6,7 +6,7 @@ import { Tabbar } from "../../commons/Tabbar";
 import { H3 } from "../../commons/Text";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { TransferBtn } from "../../components/VideoRecorder/TransferBtn";
-import { GetFamilyInfo, GetTransferAll } from "../../ReactQuery";
+import { useGetFamilyInfo, useGetTransferAll } from "../../ReactQuery";
 import { useRecoilState } from "recoil";
 import { TransferInfo } from "../../types/transferInfo";
 import { FamilyMember } from "../../types/familyMember";
@@ -35,8 +35,8 @@ export default function Home() {
 
   // 유저 가족 정보 & 송금 내역 가져오기
 
-  const familyInfoQuery = GetFamilyInfo({ userId });
-  const transferListQuery = GetTransferAll({ userId: userId, count: 10 });
+  const familyInfoQuery = useGetFamilyInfo({ userId });
+  const transferListQuery = useGetTransferAll({ userId: userId, count: 10 });
 
   const familydata = familyInfoQuery.data as FamilyMember[]; // Assuming FamilyMember is the correct type
   const transferlist = transferListQuery.data as TransferInfo[];

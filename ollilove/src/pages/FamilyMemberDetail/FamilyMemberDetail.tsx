@@ -10,7 +10,7 @@ import sendMsg from "../../assets/sendMsg.svg";
 import { RecentBtn } from "../../components/FamilyDetail/RecentBtn";
 import { QueryClient } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GetFamilyInfo, GetTransferPersonal } from "../../ReactQuery";
+import { useGetFamilyInfo, useGetTransferPersonal } from "../../ReactQuery";
 import { TransferInfo } from "../../types/transferInfo";
 
 interface FamilyMemberDetailProps {
@@ -22,8 +22,7 @@ export default function FamilyMemberDetail({
   name,
   relationship,
 }: FamilyMemberDetailProps) {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [nickName, setNickName] = useState<string>("");
@@ -35,7 +34,7 @@ export default function FamilyMemberDetail({
   const localStorageUserId = localStorage.getItem("userId");
 
   const [userId, setUserId] = useState<number>(0);
-  
+
   if (localStorageUserId != null) {
     setUserId(JSON.parse(localStorageUserId));
   } else {
@@ -46,7 +45,7 @@ export default function FamilyMemberDetail({
 
   const [familyId, setFamilyId] = useState<string>("");
 
-  const location = useLocation()
+  const location = useLocation();
 
   const memberId = parseInt(location.state);
 
@@ -58,11 +57,17 @@ export default function FamilyMemberDetail({
 
   const user = queryClient.getQueryData(["getUser", userId]);
 
-  const familyInfoQuery = GetFamilyInfo({userId});
+  const familyInfoQuery = useGetFamilyInfo({ userId });
 
-  const member = familyInfoQuery.data?.filter((el) => {return el.userId === memberId})[0];
+  const member = familyInfoQuery.data?.filter((el) => {
+    return el.userId === memberId;
+  })[0];
 
-  const transferListQuery = GetTransferPersonal({userId:userId, count:10, targetUserId: memberId });
+  const transferListQuery = useGetTransferPersonal({
+    userId: userId,
+    count: 10,
+    targetUserId: memberId,
+  });
 
   const transferData = transferListQuery.data as TransferInfo[];
 
@@ -96,25 +101,25 @@ export default function FamilyMemberDetail({
             <RecentBtn
               key={i}
               profile={el.profile}
-              name={
-                el.senderId === userId ?
-                el.receiverName
-                :
-                el.senderName
-              }
+              name={el.senderId === userId ? el.receiverName : el.senderName}
               relationship={el.nickname}
               amount={el.amount}
               time={el.historyCreatedAt}
               heart={false}
               onClickTransfer={() => {
-                navigate("/receiveheart", {state: el});
+                navigate("/receiveheart", { state: el });
               }}
             ></RecentBtn>
           );
         })}
       </RecordHeartBox>
       {isOpen && <ModalBox></ModalBox>}
-      <Modal nickName={nickName} setNickName={setNickName} isOpen={isOpen} onClose={onClose}></Modal>
+      <Modal
+        nickName={nickName}
+        setNickName={setNickName}
+        isOpen={isOpen}
+        onClose={onClose}
+      ></Modal>
     </FamilyMemberDetailContainer>
   );
 }

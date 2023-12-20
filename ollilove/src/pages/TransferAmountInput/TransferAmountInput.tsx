@@ -6,7 +6,7 @@ import { Comment, H3 } from "../../commons/Text";
 import { TextArea2 } from "../../commons/TextArea2";
 import { useLocation, useNavigate } from "react-router-dom";
 import { QueryClient } from "react-query";
-import { GetFamilyInfo } from "../../ReactQuery";
+import { useGetFamilyInfo } from "../../ReactQuery";
 import { FamilyMember } from "../../types/familyMember";
 
 export default function TransferAmountInput() {
@@ -30,16 +30,18 @@ export default function TransferAmountInput() {
   } else {
     navigate("/signup");
   }
-  
+
   const queryClient = new QueryClient();
 
   const user = queryClient.getQueryData(["getUser", userId]);
 
   // 가족 정보 받아와서 detail 가족 정보 찾기
-  const familyQuery = GetFamilyInfo({userId});
+  const familyQuery = useGetFamilyInfo({ userId });
   const familyData = familyQuery.data as FamilyMember[];
 
-  const targetFamily = familyData.filter((el) => {return el === location.state})[0]
+  const targetFamily = familyData.filter((el) => {
+    return el === location.state;
+  })[0];
 
   return (
     <TransferAmountInputContainer>

@@ -326,6 +326,7 @@ export default function SignUp() {
                   profile: profile,
                 });
                 mutation.mutate();
+                navigate("/home");
               }}
             >
               시작하기
