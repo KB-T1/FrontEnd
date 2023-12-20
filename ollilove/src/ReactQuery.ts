@@ -10,8 +10,8 @@ const baseUrl = "http://kbt1-ollilove-user-service:8080/api/";
 const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/";
 const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/";
 const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/";
-const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/";
-const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/api/history/"';
+const accountUrl = "http://kbt1-ollilove-transfer-service:8081/transfer-api/account/";
+const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/transfer-api/history/"';
 
 // **** GET/POST 맞는지 확인
 // **** 파라미터 확인
@@ -80,11 +80,11 @@ async function getUser(params: GetUserParams) {
     throw new Error("user id not exist");
   }
 
-  const response = await fetch(userUrl + `${localStorageUserId}/`);
-  if (!response.ok) {
+  const response = await axios.get(userUrl + `${localStorageUserId}/`);
+  if (response.status !== 200) {
     throw new Error("Problem fetching data");
   }
-  const user = await response.json();
+  const user = await response.data.json();
 
   return user;
 }
@@ -101,17 +101,24 @@ interface GetFamilyInfoCondition {
 }
 
 interface FamilyInfoParams {
-  queryKey: [string, { info: GetFamilyInfoCondition }];
+  queryKey: [string, { }];
 }
 
 async function getFamily(params: FamilyInfoParams) {
-  const [, { info }] = params.queryKey;
-  const userId = localStorage;
-  const response = await fetch(`${baseUrl}${info.userId}/family`);
-  if (!response.ok) {
+  const [, { }] = params.queryKey;
+
+  const localStorageUserId = localStorage.getItem("userId");
+
+  if (!localStorageUserId) {
+    throw new Error("user id not exist");
+  }
+
+  const response = await axios.get(`${baseUrl}${localStorageUserId}/family`);
+
+  if (response.status !== 200) {
     throw new Error("Problem fetching data");
   }
-  const familyInfoList = await response.json();
+  const familyInfoList = await response.data.json();
 
   return familyInfoList;
 }
@@ -129,16 +136,27 @@ interface GetTransferAllCondition {
 }
 
 interface TransferAllParams {
-  queryKey: [string, { info: GetTransferAllCondition }];
+  queryKey: [string, {  }];
 }
 
 async function getTransferAll(params: TransferAllParams) {
-  const [, { info }] = params.queryKey;
-  const response = await fetch(historyUrl);
-  if (!response.ok) {
+  const [, {  }] = params.queryKey;
+
+  const localStorageUserId = localStorage.getItem("userId");
+
+  if (!localStorageUserId) {
+    throw new Error("user id not exist");
+  }
+
+  const response = await axios.post(historyUrl, {
+      userId:localStorageUserId,
+      count: 10
+  });
+
+  if (response.status !== 200) {
     throw new Error("Problem fetching data");
   }
-  const TransferList = await response.json();
+  const TransferList = await response.data.json();
 
   return TransferList;
 }
@@ -155,16 +173,21 @@ interface GetAccountInfoCondition {
 }
 
 interface GetAccountParams {
-  queryKey: [string, { info: GetAccountInfoCondition }];
+  queryKey: [string, { }];
 }
 
 async function getAccount(params: GetAccountParams) {
-  const [, { info }] = params.queryKey;
-  const response = await fetch(accountUrl + `${info.userId}/`);
-  if (!response.ok) {
+  const [, { }] = params.queryKey;
+  
+  const localStorageUserId = localStorage.getItem("userId")
+  if (!localStorageUserId) {
+    throw new Error("user id not exist");
+  }
+  const response = await axios.get(accountUrl + `my/`);
+  if (response.status !== 200) {
     throw new Error("Problem fetching data");
   }
-  const account = await response.json();
+  const account = await response.data.json();
 
   return account;
 }
@@ -178,9 +201,7 @@ export const useGetAccount = (conditions: GetAccountInfoCondition) => {
 // 송금 개인 간 내역 관련 query
 
 interface GetTransferPersonalCondition {
-  userId: number;
   targetUserId: number;
-  count: number;
 }
 
 interface TransferPersonalParams {
@@ -189,11 +210,21 @@ interface TransferPersonalParams {
 
 async function getTransferPersonal(params: TransferPersonalParams) {
   const [, { info }] = params.queryKey;
-  const response = await fetch(historyUrl + `/history`);
-  if (!response.ok) {
+
+  const localStorageUserId = localStorage.getItem("userId")
+
+  if (!localStorageUserId) {
+    throw new Error("user id not exist");
+  }
+  const response = await axios.get(historyUrl + `/with`,{params:{
+    targetUserId: params.queryKey[1].info.targetUserId,
+    userId: localStorageUserId,
+    count: 10}}
+  );
+  if (response.status !== 200) {
     throw new Error("Problem fetching data");
   }
-  const TransferList = await response.json();
+  const TransferList = await response.data.json();
 
   return TransferList;
 }
