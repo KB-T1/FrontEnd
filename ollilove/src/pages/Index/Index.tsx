@@ -1,4 +1,4 @@
-import MainImage from "../../assets/landingMainImage.svg";
+import MainImage from "../../assets/greeting.svg";
 import MainButton from "../../assets/landingButton.svg";
 import styled from "styled-components";
 import { Comment, P2 } from "../../commons/Text";
@@ -22,14 +22,12 @@ export default function Index() {
   });
 
   const handleBtnClick = () => {
-
     const userId = localStorage.getItem("userId");
     const navigateTo = userId ? "/home" : "signup";
 
     navigate(navigateTo);
-    
   };
-  
+
   return (
     <PageWrapper>
       <img src={MainImage} alt="mainImage" />
