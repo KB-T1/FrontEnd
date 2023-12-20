@@ -120,7 +120,7 @@ async function getFamily(params: FamilyInfoParams) {
     throw new Error("user id not exist");
   }
 
-  const response = await axios.get(`${baseUrl}${localStorageUserId}/family`);
+  const response = await axios.get(`${baseUrl}/family/user/${localStorageUserId}`);
 
   if (response.status !== 200) {
     throw new Error("Problem fetching data");
@@ -246,6 +246,55 @@ export const useGetTransferPersonal = (
     () =>
       getTransferPersonal({
         queryKey: ["getTransferPersonal", { info: conditions }],
+      })
+  );
+};
+
+// 비디오 업로드 query
+
+interface UploadVideoCondition {
+  senderId: number;
+  receiverId: number;
+  video: Blob;
+}
+
+interface UploadVideoParams {
+  queryKey: [string, { info: UploadVideoCondition }];
+}
+
+async function uploadVideo(params: UploadVideoParams) {
+  const [, { info }] = params.queryKey;
+
+  try{
+    const formData = new FormData();
+    formData.append('video', info.video, 'video.webm')
+    formData.append('senderId', String(info.senderId));
+    formData.append('receiverId', String(info.receiverId));
+    const response = await axios.post(historyUrl + `/with`, formData, { headers: {
+      'Content-Type' : 'multipart/form-data',
+  },}
+  );
+
+    if (response.status !== 200) {
+      throw new Error("Problem fetching data");
+    }
+    const videoUrl = await response.data.json();
+
+    return videoUrl;
+  }
+  catch (e){
+    throw new Error("form-data error");
+  }
+}
+
+export const useUploadVideo = (
+  conditions: UploadVideoCondition
+) => {
+  return useQuery<String, Error>(
+    ["uploadVideo", conditions],
+    () =>
+      uploadVideo({
+        queryKey: ["uploadVideo", { info: conditions }],
       })
   );
 };
