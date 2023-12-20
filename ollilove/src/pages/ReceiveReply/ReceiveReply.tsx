@@ -1,50 +1,46 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { Navbar } from "../../commons/Navbar";
 import { H3 } from "../../commons/Text";
-
-import { ButtonYellow } from "../../commons/Button";
 import heartLetter from "../../assets/heartLetter.svg";
-import money from "../../assets/money.svg";
+import { ButtonYellow } from "../../commons/Button";
 import tmpVideo from "../../assets/tmpVideo.svg";
-import { useNavigate, useLocation } from "react-router-dom";
 
-export default function ReceiveHeart() {
-  const [onPlay, setOnPlay] = useState<number>(0);
-
-  const navigate = useNavigate();
-
-  const location = useLocation();
-  const member = location.state;
+export function ReceiveReply() {
+  const [onPlay, setOnPlay] = useState<boolean>(false);
+  const member = {
+    userName: "이수민",
+    nickName: "따님",
+  };
 
   return (
-    <TransferConfirmContainer>
-      {onPlay === 0 && (
+    <ReceiveReplyContainer>
+      {!onPlay && (
         <>
           <Navbar type="esc"> </Navbar>
           <Header>
             <H3>
               {member.userName}({member.nickName}) 님이
             </H3>
-            <H3>{member.amount.toLocaleString()}원과 마음을 보냈어요.</H3>
+            <H3>답장을 보냈어요.</H3>
           </Header>
           <VideoBox>
             <img src={heartLetter} alt="letter" width={120} />
           </VideoBox>
           <ButtonYellow
             onClick={() => {
-              setOnPlay(1);
+              setOnPlay(true);
             }}
           >
             영상보고 마음받기
           </ButtonYellow>
         </>
       )}
-      {onPlay === 1 && (
+      {onPlay && (
         <>
           <Navbar
             onClick={() => {
-              setOnPlay(0);
+              setOnPlay(false);
             }}
             type="back"
           >
@@ -59,41 +55,14 @@ export default function ReceiveHeart() {
           <VideoBox>
             <img src={tmpVideo} alt="video" width={250} />
           </VideoBox>
-          <ButtonYellow
-            onClick={() => {
-              setOnPlay(2);
-            }}
-          >
-            용돈 받기
-          </ButtonYellow>
+          <ButtonYellow>용돈 받기</ButtonYellow>
         </>
       )}
-      {onPlay === 2 && (
-        <>
-          <Navbar type="esc"> </Navbar>
-          <Header>
-            <H3>
-              {member.userName}({member.nickName}) 님에게
-            </H3>
-            <H3>{member.amount.toLocaleString()}원을 받았어요.</H3>
-          </Header>
-          <VideoBox>
-            <img src={money} alt="letter" width={250} />
-          </VideoBox>
-          <ButtonYellow
-            onClick={() => {
-              navigate("/responserecord");
-            }}
-          >
-            영상편자로 답장하기
-          </ButtonYellow>
-        </>
-      )}
-    </TransferConfirmContainer>
+    </ReceiveReplyContainer>
   );
 }
 
-const TransferConfirmContainer = styled.div`
+const ReceiveReplyContainer = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -110,12 +79,6 @@ const Header = styled.div`
   margin-bottom: 186px;
 `;
 
-const Header2 = styled.div`
-  margin-left: 20px;
-  margin-top: 36px;
-  margin-bottom: 36px;
-`;
-
 const VideoBox = styled.div`
   margin: 0 auto;
   display: flex;
@@ -127,4 +90,9 @@ const VideoBox = styled.div`
   & > img {
     margin-bottom: 1rem;
   }
+`;
+const Header2 = styled.div`
+  margin-left: 20px;
+  margin-top: 36px;
+  margin-bottom: 36px;
 `;

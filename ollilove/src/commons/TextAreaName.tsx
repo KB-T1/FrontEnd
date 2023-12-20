@@ -1,23 +1,24 @@
-import React from "react";
+import { ChangeEvent } from "react";
 import styled from "styled-components";
 
 interface TextAreaProps {
   placeholder: string;
-  nickName: string;
-  setNickName: (str: string) => void;
+  value: string;
+  setName: (val: string) => void;
 }
 
-export const TextArea1 = ({
-  nickName,
-  setNickName,
+export const TextAreaName = ({
+  setName,
+  value,
   placeholder,
 }: TextAreaProps) => {
   return (
     <Input
-      value={nickName}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-        setNickName(e.target.value);
+        const target = e.target;
+        setName(target.value);
       }}
+      value={value}
       type="text"
       placeholder={placeholder}
     ></Input>

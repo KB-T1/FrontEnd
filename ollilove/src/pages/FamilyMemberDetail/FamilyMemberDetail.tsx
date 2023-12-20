@@ -26,6 +26,7 @@ export default function FamilyMemberDetail({
   const navigate = useNavigate()
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [nickName, setNickName] = useState<string>("");
 
   const queryClient = new QueryClient();
 
@@ -113,7 +114,7 @@ export default function FamilyMemberDetail({
         })}
       </RecordHeartBox>
       {isOpen && <ModalBox></ModalBox>}
-      <Modal isOpen={isOpen} onClose={onClose}></Modal>
+      <Modal nickName={nickName} setNickName={setNickName} isOpen={isOpen} onClose={onClose}></Modal>
     </FamilyMemberDetailContainer>
   );
 }

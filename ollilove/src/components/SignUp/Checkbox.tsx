@@ -28,8 +28,8 @@ export function Checkbox({
 
   return (
     <CheckboxContainer>
-      <div>
-        <img src={imgSrc} alt="checkbox" onClick={handleClick} />
+      <div onClick={handleClick}>
+        <img src={imgSrc} alt="checkbox" />
         <P3>{children}</P3>
       </div>
       <img src={arrow} alt="arrow" />
@@ -41,8 +41,8 @@ const CheckboxContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
-  & > div:last-child {
+  margin-bottom: 20px;
+  & > div {
     display: flex;
     width: 300px;
 
