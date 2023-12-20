@@ -5,15 +5,23 @@ import { H3 } from "../../commons/Text";
 import tmpVideo from "../../assets/tmpVideo.svg";
 import { ButtonYellow } from "../../commons/Button";
 import heartLetter from "../../assets/heartLetter.svg";
+import { useLocation } from "react-router-dom";
 
 export default function ResponseConfirm() {
   const [realSend, setRealSend] = useState<boolean>(false);
+
+  const location = useLocation();
+
+  const videoBlob = location.state?.state;
+  console.log(videoBlob)
+  const videoUrl = URL.createObjectURL(videoBlob);
 
   const tmpData = {
     name: "이수민",
     relationship: "따님",
     amount: 500000,
   };
+
 
   return (
     <TransferConfirmContainer>
@@ -27,7 +35,9 @@ export default function ResponseConfirm() {
             <H3>답장을 보낼게요.</H3>
           </Header>
           <VideoBox>
-            <img src={tmpVideo} alt="video" width={250} />
+            <video width="250" height="360" controls>
+              <source src={videoUrl} type="video/webm"/>
+            </video>
             <span>
               <input type="checkbox" />
               답장 꼭 받기

@@ -91,17 +91,8 @@ export default function Home() {
               amount={el.amount}
               time={el.historyCreatedAt}
               heart={false}
-              onClickTransfer={() => {
-                navigate("/receiveheart", {
-                  state: {
-                    historyId: el.historyId,
-                    amount: el.amount,
-                    videoUrl: el.videoUrl,
-                    targetName:
-                      el.senderId === userId ? el.receiverName : el.senderName,
-                    nickname: el.nickname,
-                  },
-                });
+              onClickTransfer={()=>{
+                navigate("/receiveheart", {state: el});
               }}
             ></RecentBtn>
           );

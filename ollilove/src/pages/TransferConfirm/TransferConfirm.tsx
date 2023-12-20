@@ -5,12 +5,21 @@ import { H3 } from "../../commons/Text";
 import tmpVideo from "../../assets/tmpVideo.svg";
 import { ButtonYellow } from "../../commons/Button";
 import heartLetter from "../../assets/heartLetter.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function TransferConfirm() {
+
   const [realSend, setRealSend] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const location = useLocation();
+
+  const videoBlob = location.state?.state;
+  console.log("Received Video Blob:", videoBlob);
+  console.log("Blob Type:", videoBlob?.type);
+  const videoUrl = URL.createObjectURL(videoBlob);
+
+  
   const tmpData = {
     name: "이수민",
     relationship: "따님",
@@ -29,7 +38,9 @@ export default function TransferConfirm() {
             <H3>{tmpData.amount.toLocaleString()}원과 마음을 보낼게요.</H3>
           </Header>
           <VideoBox>
-            <img src={tmpVideo} alt="video" width={250} />
+            <video width="250" height="360" controls>
+              <source src={videoUrl} type="video/webm"/>
+            </video>
             <span>
               <input type="checkbox" />
               답장 꼭 받기
