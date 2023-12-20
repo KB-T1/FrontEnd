@@ -17,11 +17,10 @@ podTemplate(
 		containerTemplate(name: 'podman', image: 'mgoltzsche/podman', ttyEnabled: true, command: 'cat', privileged: true)
 	],
 	// volume mount
-	/*
 	volumes: [
-    	nfsVolume( mountPath: '/home/jenkins/agent/workspace', serverAddress: '10.193.24.247', serverPath: '/users/data/jenkins', readOnly: false ),
+		nfsVolume( mountPath: '/root/.npm', serverAddress: '10.193.24.247', serverPath: '/users/data/jenkins/.npm', readOnly: false ),
+		nfsVolume( mountPath: '/root/.yarn', serverAddress: '10.193.24.247', serverPath: '/users/data/jenkins/.yarn', readOnly: false )
     ]
-	*/
 ) 
 
 {
@@ -47,7 +46,7 @@ podTemplate(
 			
 			stage("Build React Scripts") {
 				container("node") {
-					sh "yarn install --cache-folder /home/jenkins/agent/workspace/.cache --modules_folder ./ollilove"
+					sh "yarn install --cache-folder /root/.yarn --modules_folder ./ollilove"
 					sh "npm install --prefix ./ollilove"
 					sh "npm run build --prefix ./ollilove"
 				}
