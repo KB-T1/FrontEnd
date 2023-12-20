@@ -17,6 +17,7 @@ import { TextAreaCode } from "../../commons/TextAreaCode";
 import { TextAreaCodeCreated } from "../../commons/TextAreaCodeCreated";
 import { RandomComponent } from "../../utils/GenRandomId";
 import family from "../../assets/family.svg";
+import { useSignUp } from "../../ReactQuery";
 
 export interface CheckStateType {
   data: { id: number; isChecked: boolean }[];
@@ -30,6 +31,11 @@ export default function SignUp() {
   const [signupStage, setSignupStage] = useState<number>(0);
   const [isSelectedAccount, setIsSelectedAccount] = useState<number>(0);
   const [inviteCode, setInviteCode] = useState<string>("");
+  const mutation = useSignUp({
+    familyId: inviteCode || createdCode,
+    userName: name,
+    profile: profile,
+  });
   const [checkState, setCheckState] = useState<CheckStateType>({
     data: [
       {
@@ -314,8 +320,12 @@ export default function SignUp() {
             </div>
             <ButtonYellow
               onClick={() => {
-                navigate("/home");
-                // localstorage에 정보 담아야함
+                console.log({
+                  familyId: inviteCode || createdCode,
+                  userName: name,
+                  profile: profile,
+                });
+                mutation.mutate();
               }}
             >
               시작하기

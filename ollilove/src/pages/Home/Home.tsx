@@ -21,38 +21,34 @@ export default function Home() {
   const localStorageFamilyId = localStorage.getItem("familyId");
   const [userId, setUserId] = useState<number>(0);
   const [familyId, setFamilyId] = useState<string>("");
-  if (localStorageUserId != null) {
+
+  if (localStorageUserId !== null && localStorageFamilyId != null) {
+    setFamilyId(JSON.parse(localStorageFamilyId));
     setUserId(JSON.parse(localStorageUserId));
   } else {
     navigate("/signup");
   }
 
-  if (localStorageFamilyId != null) {
-    setFamilyId(JSON.parse(localStorageFamilyId));
-  } else {
-    navigate("/signup");
-  }
-
   const queryClient = new QueryClient();
-  
+
   const user = queryClient.getQueryData(["getUser", userId]);
 
   // 유저 가족 정보 & 송금 내역 가져오기
 
-  const familyInfoQuery = GetFamilyInfo({userId});
-  const transferListQuery = GetTransferAll({userId:userId, count: 10});
+  const familyInfoQuery = GetFamilyInfo({ userId });
+  const transferListQuery = GetTransferAll({ userId: userId, count: 10 });
 
   const familydata = familyInfoQuery.data as FamilyMember[]; // Assuming FamilyMember is the correct type
-  const transferlist = transferListQuery.data as TransferInfo[]; 
+  const transferlist = transferListQuery.data as TransferInfo[];
 
   if (familyInfoQuery.isFetching || transferListQuery.isFetching) {
-    return (<div>isFetching...</div>)
+    return <div>isFetching...</div>;
   }
 
   if (familyInfoQuery.isError || transferListQuery.isError) {
-    return (<div>isError...</div>)
+    return <div>isError...</div>;
   }
-  
+
   return (
     <HomeContainer>
       <NotifyBar
@@ -65,26 +61,22 @@ export default function Home() {
       <TransferContainer>
         <H3>영상으로 마음전하기</H3>
         <div>
-          {
-            familydata.map((el, i) => {
-              return (
-                <TransferBtn
-                  key = {i}
-                  profile={el.profile}
-                  name={el.userName}
-                  relationship={el.nickName}
-                  onClickDetailBtn={()=>{
-                    navigate("/familymemberdetail", { state: el.userId })
-                  }}
-                  onClickTransferBtn={
-                    ()=>{
-                      navigate("/transferamountinput", { state: el.userId })
-                    }
-                  }
-                ></TransferBtn>
-              );
-            })
-          }
+          {familydata.map((el, i) => {
+            return (
+              <TransferBtn
+                key={i}
+                profile={el.profile}
+                name={el.userName}
+                relationship={el.nickName}
+                onClickDetailBtn={() => {
+                  navigate("/familymemberdetail", { state: el.userId });
+                }}
+                onClickTransferBtn={() => {
+                  navigate("/transferamountinput", { state: el.userId });
+                }}
+              ></TransferBtn>
+            );
+          })}
         </div>
       </TransferContainer>
       <RecentContainer>
@@ -94,23 +86,22 @@ export default function Home() {
             <RecentBtn
               key={i}
               profile={el.profile}
-              name={
-                el.senderId === userId?
-                el.receiverName
-              :
-                el.senderName
-            }
+              name={el.senderId === userId ? el.receiverName : el.senderName}
               relationship={el.nickname}
               amount={el.amount}
               time={el.historyCreatedAt}
               heart={false}
-              onClickTransfer={()=>{
-                navigate("/receiveheart", {state: {historyId:el.historyId, amount:el.amount, videoUrl:el.videoUrl, targetName: 
-                  el.senderId === userId ?
-                  el.receiverName
-                  :
-                  el.senderName
-                , nickname: el.nickname}});
+              onClickTransfer={() => {
+                navigate("/receiveheart", {
+                  state: {
+                    historyId: el.historyId,
+                    amount: el.amount,
+                    videoUrl: el.videoUrl,
+                    targetName:
+                      el.senderId === userId ? el.receiverName : el.senderName,
+                    nickname: el.nickname,
+                  },
+                });
               }}
             ></RecentBtn>
           );
