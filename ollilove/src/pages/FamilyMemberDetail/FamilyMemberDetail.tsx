@@ -64,8 +64,6 @@ export default function FamilyMemberDetail({
   })[0];
 
   const transferListQuery = useGetTransferPersonal({
-    userId: userId,
-    count: 10,
     targetUserId: memberId,
   });
 

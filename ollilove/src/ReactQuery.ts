@@ -8,12 +8,15 @@ import axios from "axios";
 
 const baseUrl = "http://kbt1-ollilove-user-service:8080/api/";
 const testUrl = "http://kbt1-ollilove-user-api.165.192.105.60.nip.io/api/user/";
+
 const userUrl =
   "http://kbt1-ollilove-user-service.kbt1.svc.cluster.local:8080/api/user/";
 const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/";
 const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/";
-const accountUrl = "http://kbt1-ollilove-transfer-service:8081/transfer-api/account/";
-const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/transfer-api/history/"';
+const accountUrl =
+  "http://kbt1-ollilove-transfer-service:8081/transfer-api/account/";
+const historyUrl =
+  ' "http://kbt1-ollilove-transfer-service:8081/transfer-api/history/"';
 
 // **** GET/POST 맞는지 확인
 // **** 파라미터 확인
@@ -105,11 +108,11 @@ interface GetFamilyInfoCondition {
 }
 
 interface FamilyInfoParams {
-  queryKey: [string, { }];
+  queryKey: [string, {}];
 }
 
 async function getFamily(params: FamilyInfoParams) {
-  const [, { }] = params.queryKey;
+  const [, {}] = params.queryKey;
 
   const localStorageUserId = localStorage.getItem("userId");
 
@@ -140,11 +143,11 @@ interface GetTransferAllCondition {
 }
 
 interface TransferAllParams {
-  queryKey: [string, {  }];
+  queryKey: [string, {}];
 }
 
 async function getTransferAll(params: TransferAllParams) {
-  const [, {  }] = params.queryKey;
+  const [, {}] = params.queryKey;
 
   const localStorageUserId = localStorage.getItem("userId");
 
@@ -153,8 +156,8 @@ async function getTransferAll(params: TransferAllParams) {
   }
 
   const response = await axios.post(historyUrl, {
-      userId:localStorageUserId,
-      count: 10
+    userId: localStorageUserId,
+    count: 10,
   });
 
   if (response.status !== 200) {
@@ -177,13 +180,13 @@ interface GetAccountInfoCondition {
 }
 
 interface GetAccountParams {
-  queryKey: [string, { }];
+  queryKey: [string, {}];
 }
 
 async function getAccount(params: GetAccountParams) {
-  const [, { }] = params.queryKey;
-  
-  const localStorageUserId = localStorage.getItem("userId")
+  const [, {}] = params.queryKey;
+
+  const localStorageUserId = localStorage.getItem("userId");
   if (!localStorageUserId) {
     throw new Error("user id not exist");
   }
@@ -215,16 +218,18 @@ interface TransferPersonalParams {
 async function getTransferPersonal(params: TransferPersonalParams) {
   const [, { info }] = params.queryKey;
 
-  const localStorageUserId = localStorage.getItem("userId")
+  const localStorageUserId = localStorage.getItem("userId");
 
   if (!localStorageUserId) {
     throw new Error("user id not exist");
   }
-  const response = await axios.get(historyUrl + `/with`,{params:{
-    targetUserId: params.queryKey[1].info.targetUserId,
-    userId: localStorageUserId,
-    count: 10}}
-  );
+  const response = await axios.get(historyUrl + `/with`, {
+    params: {
+      targetUserId: params.queryKey[1].info.targetUserId,
+      userId: localStorageUserId,
+      count: 10,
+    },
+  });
   if (response.status !== 200) {
     throw new Error("Problem fetching data");
   }
