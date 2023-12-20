@@ -13,6 +13,7 @@ interface VideoRecorderProps {
 }
 
 export default function VideoRecorder({ isReply }: VideoRecorderProps) {
+
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -39,46 +40,44 @@ export default function VideoRecorder({ isReply }: VideoRecorderProps) {
     reset();
   };
 
-  const getMediaPermission = useCallback(async () => {
-    try {
-      const audioConstraints = { audio: true };
-      const videoConstraints = {
-        audio: false,
-        video: true,
-      };
 
-      const audioStream = await navigator.mediaDevices.getUserMedia(
-        audioConstraints
-      );
-      const videoStream = await navigator.mediaDevices.getUserMedia(
-        videoConstraints
-      );
+const getMediaPermission = useCallback(async () => {
+  try {
+    const audioConstraints = { audio: true };
+    const videoConstraints = {
+      audio: false,
+      video: { facingMode: 'user' } // 모바일에서 전면 카메라 사용을 위해 추가
+    };
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = videoStream;
-      }
+    const audioStream = await navigator.mediaDevices.getUserMedia(audioConstraints);
+    const videoStream = await navigator.mediaDevices.getUserMedia(videoConstraints);
 
-      // MediaRecorder 추가
-      const combinedStream = new MediaStream([
-        ...videoStream.getVideoTracks(),
-        ...audioStream.getAudioTracks(),
-      ]);
-
-      const recorder = new MediaRecorder(combinedStream, {
-        mimeType: "video/webm",
-      });
-
-      recorder.ondataavailable = (e) => {
-        if (typeof e.data === "undefined") return;
-        if (e.data.size === 0) return;
-        videoChunks.current.push(e.data);
-      };
-
-      mediaRecorder.current = recorder;
-    } catch (err) {
-      console.log(err);
+    if (videoRef.current) {
+      videoRef.current.srcObject = videoStream;
     }
-  }, []);
+
+    // MediaRecorder 추가
+    const combinedStream = new MediaStream([
+      ...videoStream.getVideoTracks(),
+      ...audioStream.getAudioTracks(),
+    ]);
+
+    const recorder = new MediaRecorder(combinedStream, {
+      mimeType: 'video/webm',
+    });
+
+    recorder.ondataavailable = (e) => {
+      if (typeof e.data === 'undefined') return;
+      if (e.data.size === 0) return;
+      videoChunks.current.push(e.data);
+    };
+
+    mediaRecorder.current = recorder;
+  } catch (err) {
+    console.log(err);
+  }
+}, []);
+
 
   useEffect(() => {
     getMediaPermission();
@@ -93,10 +92,13 @@ export default function VideoRecorder({ isReply }: VideoRecorderProps) {
       mediaRecorder.current?.stop();
     }
     const videoBlob = new Blob(videoChunks.current, { type: "video/webm" });
+    
+    console.log("Video Blob:", videoBlob);
+    
     const videoUrl = URL.createObjectURL(videoBlob);
     const link = document.createElement("a");
-    link.download = `My video - ${dayjs().format("YYYYMMDD")}.webm`;
     link.href = videoUrl;
+    link.download = `My video - ${dayjs().format("YYYYMMDD")}.webm`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -105,7 +107,7 @@ export default function VideoRecorder({ isReply }: VideoRecorderProps) {
     reset();
 
     const navigateTo = isReply ? "/responseconfirm" : "/transferconfirm";
-    navigate(`${navigateTo}`);
+    navigate(`${navigateTo}`, {state: {videoBlob}});
   };
 
   //사용자 정의 Hook
@@ -177,6 +179,10 @@ export default function VideoRecorder({ isReply }: VideoRecorderProps) {
     </VideoWrapper>
   );
 }
+
+VideoRecorder.defaultProps = {
+  isReply: false,
+};
 
 const VideoWrapper = styled.div`
   max-width: 393px;
