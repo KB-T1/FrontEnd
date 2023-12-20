@@ -4,10 +4,12 @@ import { FamilyMember } from "./types/familyMember";
 import { TransferInfo } from "./types/transferInfo";
 import { Account } from "./types/account";
 
-const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/";
-const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/";
-const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/";
-const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/api/history/"';
+const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/"
+const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/"
+const transferUrl = "http://kbt1-ollilove-transfer-service:8081/api/transfer/"
+const accountUrl = "http://kbt1-ollilove-transfer-service:8081/api/account/"
+const historyUrl = ' "http://kbt1-ollilove-transfer-service:8081/api/history/"'
+
 
 // **** GET/POST 맞는지 확인
 // **** 파라미터 확인
@@ -112,7 +114,6 @@ export const GetFamilyInfo = (conditions: GetFamilyInfoCondition) => {
 };
 
 // 송금 전체 내역 관련 query
-
 interface GetTransferAllCondition {
   userId: number;
   count: number;
