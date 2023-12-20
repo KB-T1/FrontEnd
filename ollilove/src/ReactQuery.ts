@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const baseUrl = "http://kbt1-ollilove-user-service:8080/api/";
-const testUrl = "https://kbt1-ollilove-user-api.165.192.105.60.nip.io/";
+const testUrl = "http://kbt1-ollilove-user-api.165.192.105.60.nip.io/api/user/";
 
 const userUrl =
   "http://kbt1-ollilove-user-service.kbt1.svc.cluster.local:8080/api/user/";
@@ -33,7 +33,7 @@ interface UserParams {
 
 async function signUpfunc(params: UserParams) {
   const [, { info }] = params.queryKey;
-  const response = await axios.post(`${userUrl}signup`, {
+  const response = await axios.post(`${testUrl}signup`, {
     ...info,
   });
   if (response.status == 200) {
