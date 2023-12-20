@@ -49,12 +49,6 @@ export default function FamilyMemberDetail({
 
   const memberId = parseInt(location.state);
 
-  if (localStorageUserId != null) {
-    setUserId(JSON.parse(localStorageUserId));
-  } else {
-    navigate("/signup");
-  }
-
   const user = queryClient.getQueryData(["getUser", userId]);
 
   const familyInfoQuery = useGetFamilyInfo({ userId });
