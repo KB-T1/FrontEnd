@@ -38,8 +38,7 @@ export default function TransferConfirm() {
             <H3>{tmpData.amount.toLocaleString()}원과 마음을 보낼게요.</H3>
           </Header>
           <VideoBox>
-            <video width="250" height="360" controls>
-              <source src={videoUrl} type="video/webm"/>
+            <video width="250" height="360" src= {videoUrl} controls>
             </video>
             <span>
               <input type="checkbox" />

@@ -46,7 +46,11 @@ const getMediaPermission = useCallback(async () => {
     const audioConstraints = { audio: true };
     const videoConstraints = {
       audio: false,
-      video: { facingMode: 'user' } // 모바일에서 전면 카메라 사용을 위해 추가
+      video: { 
+        facingMode: 'user',
+        width: { ideal: 393 }, // 원하는 가로 크기
+        height: { ideal: 650 }, // 원하는 세로 크기
+      }, // 모바일에서 전면 카메라 사용을 위해 추가
     };
 
     const audioStream = await navigator.mediaDevices.getUserMedia(audioConstraints);
@@ -94,11 +98,10 @@ const getMediaPermission = useCallback(async () => {
     const videoBlob = new Blob(videoChunks.current, { type: "video/webm" });
     
     console.log("Video Blob:", videoBlob);
-    
     const videoUrl = URL.createObjectURL(videoBlob);
     const link = document.createElement("a");
-    link.href = videoUrl;
     link.download = `My video - ${dayjs().format("YYYYMMDD")}.webm`;
+    link.href = videoUrl;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -107,7 +110,7 @@ const getMediaPermission = useCallback(async () => {
     reset();
 
     const navigateTo = isReply ? "/responseconfirm" : "/transferconfirm";
-    navigate(`${navigateTo}`, {state: {videoBlob}});
+    navigate(`${navigateTo}`, {state: videoBlob});
   };
 
   //사용자 정의 Hook
