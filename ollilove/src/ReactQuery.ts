@@ -3,9 +3,11 @@ import { User } from "./types/user";
 import { FamilyMember } from "./types/familyMember";
 import { TransferInfo } from "./types/transferInfo";
 import { Account } from "./types/account";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const baseUrl = "http://kbt1-ollilove-user-service:8080/api/";
+const testUrl = "https://kbt1-ollilove-user-api.165.192.105.60.nip.io/";
 
 const userUrl = "http://kbt1-ollilove-user-service:8080/api/user/";
 const familyUrl = "http://kbt1-ollilove-user-service:8080/api/family/";
@@ -48,12 +50,14 @@ async function signUpfunc(params: UserParams) {
 }
 
 export const useSignUp = (conditions: SignUpCondition) => {
+  const navigate = useNavigate();
   return useMutation<User, Error>(
     ["signup", conditions],
     () => signUpfunc({ queryKey: ["signup", { info: conditions }] }),
     {
       onSuccess: () => {
         alert("회원가입 성공");
+        navigate("/home");
       },
       onError: (e) => {
         console.log(e);
